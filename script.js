@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initUIInteractions();
     initSearchSystem();
     initScrollObservers();
+    initNewArticlesSystem(); 
+    initReportSliders();     
+    initAudioSystem();
 });
 
 /* =========================================
@@ -13,15 +16,36 @@ document.addEventListener('DOMContentLoaded', function() {
    ========================================= */
 function initSplashScreen() {
     const splashScreen = document.getElementById('splash-screen');
+    const navbar = document.querySelector('.navbar');
+    const indicator = document.querySelector('.section-indicator');
+    const scrollBtn = document.querySelector('.scroll-button'); // Opcional: esconder botão de scroll também
     
     // Se não existir na página, para a execução
     if (!splashScreen) return;
+
+    // Função auxiliar para mostrar/esconder UI
+    const toggleUI = (show) => {
+        const elements = [navbar, indicator, scrollBtn];
+        elements.forEach(el => {
+            if(el) {
+                if(show) {
+                    el.classList.remove('ui-hidden');
+                } else {
+                    el.classList.add('ui-hidden');
+                }
+            }
+        });
+    };
 
     const hasSeenSplash = sessionStorage.getItem('humanPlusIntroSeen');
 
     if (hasSeenSplash) {
         splashScreen.style.display = 'none';
+        toggleUI(true); 
     } else {
+        // 1. ESCONDE A UI IMEDIATAMENTE AO INICIAR
+        toggleUI(false);
+
         const splashText = document.getElementById('splash-text');
         const text = 'human';
         let charIndex = 0;
@@ -38,6 +62,9 @@ function initSplashScreen() {
 
         setTimeout(() => {
             splashScreen.classList.add('fade-out');
+            
+            setTimeout(() => toggleUI(true), 500); 
+            
         }, 6000);
 
         setTimeout(() => {
@@ -89,7 +116,8 @@ function initSearchSystem() {
     const search = document.querySelector('.search');
     const searchIcon = document.querySelector('.search-icon');
     const searchInput = document.querySelector('.search-input');
-    const contentArea = document.querySelector('.container') || document.body;
+    const contentArea = document.body;    
+    
     let originalContent = null;
 
     if (!search || !searchInput) return;
@@ -218,45 +246,349 @@ function initSearchSystem() {
 }
 
 /* =========================================
-   4. SCROLL OBSERVERS (Color Changes)
+   4. SCROLL OBSERVERS (Elevator & Colors)
    ========================================= */
 function initScrollObservers() {
     const navbar = document.querySelector('.navbar');
-    const sideMenu = document.querySelector('.side-menu');
-    const homeSection = document.getElementById('home');
+    const indicator = document.querySelector('.section-indicator'); 
+    const navLinks = document.querySelectorAll('.indicator-link'); 
     
-    // Ícones para troca de cor
+    // Ícones da navbar
     const searchIcon = document.querySelector('.search-icon');
     const pinIcon = document.querySelector('.pin img');
 
-    if (!homeSection) return;
+    const sections = document.querySelectorAll('section');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            // Alterado: Verifica se está a intersetar E se é a secção dominante
             if (entry.isIntersecting) {
-                // --- ESTAMOS NA HOME (Modo Light / Texto Branco) ---
-                
-                if (navbar) navbar.classList.remove('dark-mode');
-                if (sideMenu) sideMenu.classList.remove('dark-mode');
-                
-                // Resetar ícones para branco
-                if (searchIcon) searchIcon.src = 'icons/search.png';
-                if (pinIcon) pinIcon.src = 'icons/pin.png';
+                const id = entry.target.id;
 
-            } else {
-                // --- FORA DA HOME (Modo Dark / Texto Preto) ---
+                // 1. ATUALIZAR A BOLINHA ATIVA
+                navLinks.forEach(link => link.classList.remove('active'));
                 
-                if (navbar) navbar.classList.add('dark-mode');
-                if (sideMenu) sideMenu.classList.add('dark-mode');
-                
-                // Trocar ícones para preto
-                if (searchIcon) searchIcon.src = 'icons/search_black.png';
-                if (pinIcon) pinIcon.src = 'icons/pin_black.png';
+                const activeLink = document.querySelector(`.indicator-link[href="#${id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+
+                // 2. LÓGICA DA LINHA DA NAVBAR (Só na Home)
+                if (id === 'home') {
+                    navbar.classList.add('on-home');
+                } else {
+                    navbar.classList.remove('on-home');
+                }
+
+                // 3. CORES (Dark Mode vs Light Mode)
+                // Home e Reports = Fundo Escuro (Texto/Menu Branco)
+                if (id === 'home' || id === 'reports') {
+                    
+                    if (navbar) navbar.classList.remove('dark-mode');
+                    if (indicator) indicator.classList.remove('dark-mode'); 
+                    
+                    // Ícones Brancos
+                    if (searchIcon) searchIcon.src = 'icons/search.png';
+                    if (pinIcon) pinIcon.src = 'icons/pin.png';
+
+                } else {
+                    // Articles, Critics, Conclusion = Fundo Claro (Texto/Menu Preto)                   
+                    if (navbar) navbar.classList.add('dark-mode');
+                    if (indicator) indicator.classList.add('dark-mode');
+                    
+                    // Ícones Pretos
+                    if (searchIcon) searchIcon.src = 'icons/search_black.png'; 
+                    if (pinIcon) pinIcon.src = 'icons/pin_black.png';
+                }
             }
         });
     }, {
-        threshold: 0.5 // Ativa quando 50% da secção Home está visível/invisível
+        // CORREÇÃO AQUI:
+        // threshold 0.15 significa que basta 15% da secção aparecer para ativar.
+        // rootMargin ajuda a disparar a troca um pouco antes do centro do ecrã.
+        threshold: 0.15, 
+        rootMargin: "-20% 0px -50% 0px" 
     });
 
-    observer.observe(homeSection);
+    sections.forEach(section => {
+        observer.observe(section);
+    });
 }
+
+/* =========================================
+   5. NEW ARTICLES SYSTEM (TAB & SCRAMBLE)
+   ========================================= */
+function initNewArticlesSystem() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const panels = document.querySelectorAll('.article-panel');
+    const refToggles = document.querySelectorAll('.ref-toggle');
+
+    // 1. LÓGICA DAS REFERÊNCIAS (APENAS ABRE/FECHA A LISTA)
+    refToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const list = this.nextElementSibling;
+            const icon = this.querySelector('.ref-icon');
+            
+            list.classList.toggle('active');
+
+            if (list.classList.contains('active')) {
+                icon.textContent = '[ - ]';
+                this.style.background = '#000';
+                this.style.color = '#fff';
+            } else {
+                icon.textContent = '[ + ]';
+                this.style.background = 'transparent';
+                this.style.color = '#333';
+            }
+        });
+    });
+
+    // Função de Scramble Text
+    function scrambleText(element) {
+        const originalText = element.textContent;
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+        let iterations = 0;
+        
+        const interval = setInterval(() => {
+            element.innerText = originalText
+                .split('')
+                .map((letter, index) => {
+                    if(index < iterations) {
+                        return originalText[index];
+                    }
+                    return chars[Math.floor(Math.random() * chars.length)];
+                })
+                .join('');
+            
+            if(iterations >= originalText.length) {
+                clearInterval(interval);
+            }
+            
+            iterations += 1/2; 
+        }, 30);
+    }
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            
+            stopAudio(); 
+
+            navItems.forEach(nav => nav.classList.remove('active'));
+            panels.forEach(panel => panel.classList.remove('active'));
+
+            item.classList.add('active');
+            const targetId = item.getAttribute('data-target');
+            const targetPanel = document.getElementById(targetId);
+            
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+                
+                const title = targetPanel.querySelector('.scramble-text');
+                if (title) {
+                    scrambleText(title);
+                }
+            }
+        });
+    });
+}
+
+/* =========================================
+   6. REPORTS 3D TILT EFFECT (Melhorado)
+   ========================================= */
+function initReportsTilt() {
+    const cards = document.querySelectorAll('.tilt-effect');
+
+    if (window.innerWidth <= 768) return;
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left; 
+            const y = e.clientY - rect.top;
+            
+            const xPct = (x / rect.width) - 0.5;
+            const yPct = (y / rect.height) - 0.5;
+
+            const rotateX = yPct * -20; 
+            const rotateY = xPct * 20;
+
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+        });
+    });
+}
+
+/* =========================================
+   7. REPORT IMAGE SLIDERS
+   ========================================= */
+function initReportSliders() {
+    const sliders = document.querySelectorAll('.slider-container');
+
+    sliders.forEach(container => {
+        // Verificar se este container tem dados de imagens
+        if (!container.dataset.images) return;
+
+        const imgElement = container.querySelector('.slider-bg');
+        const prevBtn = container.querySelector('.prev');
+        const nextBtn = container.querySelector('.next');
+        
+        // Ler configurações do HTML
+        const path = container.dataset.path;
+        const images = JSON.parse(container.dataset.images);
+        let currentIndex = 0;
+
+        function updateSlide() {
+            // Efeito visual de "glitch" ou fade rápido na troca
+            imgElement.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                imgElement.src = path + images[currentIndex];
+                imgElement.onload = () => {
+                    imgElement.style.opacity = '1';
+                };
+            }, 100);
+        }
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = images.length - 1;
+            }
+            updateSlide();
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            currentIndex++;
+            if (currentIndex >= images.length) {
+                currentIndex = 0;
+            }
+            updateSlide();
+        });
+    });
+}
+
+
+/* =========================================
+   8. TEXT TO SPEECH (CYBER AUDIO)
+   ========================================= */
+let synth = window.speechSynthesis;
+let currentUtterance = null;
+let currentBtn = null;
+
+let voices = [];
+function loadVoices() {
+    voices = synth.getVoices();
+}
+if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function toggleArticleAudio(btn) {
+    // 1. Se já estiver a tocar ESTE artigo, pára tudo.
+    if (synth.speaking && currentBtn === btn) {
+        stopAudio();
+        return;
+    }
+
+    // 2. Se estiver a tocar OUTRO artigo, pára o anterior primeiro
+    if (synth.speaking) {
+        stopAudio();
+    }
+
+    // 3. Iniciar novo áudio
+    const article = btn.closest('.article-panel');
+    const content = getCleanText(article);
+    
+    // Configura a fala
+    const utterance = new SpeechSynthesisUtterance(content);
+    
+    // Tenta encontrar uma voz UK (United Kingdom)
+    // Tenta "Google UK English Female", ou qualquer "en-GB"
+    const ukVoice = voices.find(v => v.name.includes('Google UK English Male')) || 
+                    voices.find(v => v.lang === 'en-GB') ||
+                    voices.find(v => v.lang === 'en_GB');
+
+    if (ukVoice) {
+        utterance.voice = ukVoice;
+    }
+    
+    // Ajustes "Robóticos/Futuristas"
+    utterance.rate = 1.0;  // Velocidade normal
+    utterance.pitch = 0.9; // Ligeiramente mais grave para ser mais sério
+
+    // Eventos de estado
+    utterance.onstart = () => {
+        setButtonState(btn, true);
+        currentBtn = btn;
+    };
+
+    utterance.onend = () => {
+        setButtonState(btn, false);
+        currentBtn = null;
+    };
+
+    // Tocar
+    synth.speak(utterance);
+    currentUtterance = utterance;
+}
+
+function stopAudio() {
+    synth.cancel();
+    if (currentBtn) {
+        setButtonState(currentBtn, false);
+        currentBtn = null;
+    }
+}
+
+// Muda o visual do botão (Play vs Stop)
+function setButtonState(btn, isPlaying) {
+    const icon = btn.querySelector('.icon-state');
+    const text = btn.querySelector('.text-state');
+    
+    if (isPlaying) {
+        btn.classList.add('playing');
+        icon.textContent = '■'; // Stop Icon
+        text.textContent = 'TRANSMITTING...';
+    } else {
+        btn.classList.remove('playing');
+        icon.textContent = '▶'; // Play Icon
+        text.textContent = 'INIT_AUDIO_LOG';
+    }
+}
+
+// Função auxiliar para limpar o texto (não ler menus ou botões)
+function getCleanText(element) {
+    // Clona o elemento para não estragar o original
+    let clone = element.cloneNode(true);
+    
+    // Remove elementos que não queremos ouvir
+    const ignoreList = [
+        '.references-container', // Não ler a lista de referências
+        '.cyber-audio-btn',      // Não ler o texto do próprio botão
+        '.panel-meta',           // Opcional: não ler o subtítulo técnico
+        'button'                 // Não ler outros botões
+    ];
+
+    ignoreList.forEach(selector => {
+        const els = clone.querySelectorAll(selector);
+        els.forEach(el => el.remove());
+    });
+
+    return clone.innerText;
+}
+
+// Parar o áudio se o utilizador mudar de aba no menu de artigos
+// Adiciona isto ao teu initNewArticlesSystem existente, dentro do evento click do navItem
+/*
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            stopAudio(); // <--- ADICIONAR ESTA LINHA NA TUA FUNÇÃO EXISTENTE
+            // ... resto do código ...
+        });
+    });
+*/

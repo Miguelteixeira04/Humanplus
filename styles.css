@@ -5,67 +5,43 @@
    =================== VARIABLES ===================
    ================================================= */
 :root {
+  /* Variáveis Originais */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+  --primary-color: #426dfa;
+  --secondary-color: #0f359e;
+  
+  /* Novas Variáveis para o Design Futurista */
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+  --font-sans: "Montserrat", sans-serif;
+  --accent-color: #00f2ff;
+  --dark-bg: #0a0a0a;
+  --dark-card: #111111;
+  
+  /* Variáveis Tailwind/System (Mantidas) */
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
-  --primary-color: #426dfa;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+--background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
 }
 
 @layer base {
-  * {
-    border-color: var(--border);
-  }
+  * { border-color: var(--border); }
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: -apple-system, BlinkMacSystemFont, "Orbitron", "Montserrat", sans-serif;
+    font-family: var(--font-orbitron);
   }
 }
-
 /* =================================================
    ================= GLOBAL RESET ==================
    ================================================= */
@@ -109,6 +85,13 @@ section {
   z-index: 9999;
   opacity: 1;
   transition: opacity 0.8s ease-out;
+}
+
+.ui-hidden {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-20px); /* Pequeno efeito de entrada */
+    transition: all 0.8s ease;    /* Suaviza o aparecimento */
 }
 
 .splash-screen.fade-out {
@@ -236,7 +219,7 @@ section {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 99999;
   background: rgba(255, 255, 255, 0);
 }
 
@@ -251,8 +234,12 @@ section {
   background-size: 200% 100%;
   pointer-events: none;
   animation: moveStripe 3s linear infinite;
-  opacity: 1; 
+  opacity: 0; 
   transition: opacity 0.4s ease, background 0.4s ease;
+}
+
+.navbar.on-home::after {
+  opacity: 1;
 }
 
 @keyframes moveStripe {
@@ -564,134 +551,184 @@ section {
 /* =================================================
    =================== SIDE MENU ===================
    ================================================= */
-.side-menu {
-  position: fixed;
-  top: 55%;
-  left: clamp(1rem, 3vw, 2.5rem);
-  transform: translateY(-50%);
-  z-index: 999;
-  transition: all 0.4s ease; 
+
+/* --- TECH ELEVATOR (CYBER SPINE) --- */
+.section-indicator {
+    position: fixed;
+    left: 10px; 
+    top: 50%;   
+    transform: translateY(-50%);
+    z-index: 1200;
+    display: flex;
+    flex-direction: row; /* Alterado para acomodar a linha e os items */
+    pointer-events: auto;
+    height: auto;
 }
 
-.side-menu ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(12px, 2vw, 18px);
+/* A Linha Vertical (O Circuito) */
+.section-indicator .tech-line {
+    position: absolute;
+    left: 28px; /* Alinhado com o centro dos losangos */
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    z-index: -1;
+    box-shadow: 0 0 10px rgba(66, 109, 250, 0);
+    transition: all 0.5s ease;
 }
 
-.side-menu li {
-  position: relative;
-  padding: 8px 20px 8px 0;
-  width: clamp(120px, 25vw, 180px);
+.indicator-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Mais espaçamento para parecer um HUD */
+    padding: 10px 0;
+    align-items: flex-start;
 }
 
-.side-menu a {
-  text-decoration: none;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(0.875rem, 1.5vw, 1rem);
-  color: white;
-  letter-spacing: clamp(1px, 0.5vw, 3px);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-  transition: all 0.35s ease;
+/* O Link Container */
+.indicator-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    height: 20px;
+    transition: all 0.3s ease;
+    opacity: 0.6; /* Inativo é semi-transparente */
 }
 
-.side-menu a::before {
-  content: ">";
-  font-size: clamp(1.25rem, 2.5vw, 1.375rem);
-  transition: all 0.35s ease;
-  color: white;
-  text-shadow: 0 0 10px rgba(131,188,253,0.4);
-  flex-shrink: 0;
+.indicator-link:hover {
+    opacity: 1;
 }
 
-.side-menu a span {
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.35s ease;
-  position: relative;
-  white-space: nowrap;
-  color: white;
+/* O Número (01, 02...) */
+.nav-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: white;
+    margin-right: 15px;
+    font-weight: bold;
+    opacity: 0; /* Escondido por padrão, aparece no hover ou active */
+    transform: translateX(-10px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.side-menu a span::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #83bcfd, #426dfa);
-  box-shadow: 0 0 10px rgba(131,188,253,0.8);
-  transition: width 0.4s ease;
+/* Wrapper para centralizar o losango na linha */
+.marker-wrapper {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
-.side-menu li:hover a::before {
-  color: white;
-  text-shadow: 0 0 12px rgba(131,188,253,1);
+/* O Marcador (Losango em vez de bola) */
+.tech-marker {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: #0a0a0a;
+    border: 1px solid white;
+    transform: rotate(45deg); /* Losango */
+    transition: all 0.4s ease;
+    box-shadow: 0 0 5px rgba(255,255,255,0.2);
 }
 
-.side-menu li:hover a span {
-  opacity: 1;
-  transform: translateX(0);
-  color: white;
-  text-shadow: 0 0 10px rgba(131,188,253,0.9);
+/* O Texto do Label (HOME_BASE) */
+.nav-label {
+    font-family: var(--font-orbitron);
+    font-size: 0.8rem;
+    color: white;
+    position: absolute;
+    left: 50px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(10px);
+    letter-spacing: 2px;
+    background: rgba(0,0,0,0.6);
+    padding: 4px 8px;
+    border-left: 2px solid var(--primary-color);
+    backdrop-filter: blur(4px);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
 }
 
-.side-menu li:hover a span::after {
-  width: 100%;
+/* --- STATES (HOVER & ACTIVE) --- */
+
+/* Hover: Mostra Label e Número */
+.indicator-link:hover .nav-num,
+.indicator-link:hover .nav-label {
+    opacity: 1;
+    transform: translateX(0);
 }
 
-.side-menu li:hover a {
-  transform: translateX(10px);
+.indicator-link:hover .tech-marker {
+    background: white;
+    transform: rotate(45deg) scale(1.2);
+    box-shadow: 0 0 10px rgba(255,255,255,0.8);
 }
 
-.side-menu.dark-mode a {
-  color: #000000;
+/* Active: Estado selecionado definitivo */
+.indicator-link.active {
+    opacity: 1;
 }
 
-.side-menu.dark-mode a::before {
-  color: #000000;
-  text-shadow: 0 0 10px rgba(66,109,250,0.3);
+.indicator-link.active .nav-num {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--primary-color);
+    text-shadow: 0 0 5px var(--primary-color);
 }
 
-.side-menu.dark-mode a span {
-  color: #000000;
-  text-shadow: none;
+.indicator-link.active .tech-marker {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: rotate(225deg) scale(1.4); /* Roda completametne */
+    box-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--primary-color);
 }
 
-.side-menu.dark-mode a span::after {
-  background: linear-gradient(90deg, #426dfa, #0f359e);
-  box-shadow: 0 0 10px rgba(66,109,250,0.6);
+/* --- DARK MODE OVERRIDES (Para fundos claros) --- */
+.section-indicator.dark-mode .tech-line {
+    background: rgba(0, 0, 0, 0.15);
 }
 
-.side-menu.dark-mode li:hover a::before {
-  color: black;
-  text-shadow: 0 0 12px rgba(66,109,250,0.8);
+.section-indicator.dark-mode .nav-num {
+    color: #000;
 }
 
-.side-menu.dark-mode li:hover a span {
-  opacity: 1;
-  transform: translateX(0);
-  color: black;
-  text-shadow: 0 0 10px rgba(66,109,250,0.6);
+.section-indicator.dark-mode .tech-marker {
+    border-color: #000;
+    background: white; /* Fundo branco no modo claro */
 }
 
-.side-menu.dark-mode li:hover a span::after {
-  width: 100%;
+.section-indicator.dark-mode .indicator-link:hover .tech-marker {
+    background: #000;
 }
 
-.side-menu.dark-mode li:hover a {
-  transform: translateX(10px);
+.section-indicator.dark-mode .nav-label {
+    color: #000;
+    background: rgba(255,255,255,0.8);
+    text-shadow: none;
 }
 
-.side-menu a,
-.side-menu a::before,
-.side-menu a span {
-  transition: color 0.4s ease, text-shadow 0.4s ease, opacity 0.35s ease, transform 0.35s ease;
+.section-indicator.dark-mode .indicator-link.active .tech-marker {
+    background: var(--secondary-color); /* Azul mais escuro no fundo branco */
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 10px rgba(15, 53, 158, 0.5);
+}
+
+.section-indicator.dark-mode .indicator-link.active .nav-num {
+    color: var(--secondary-color);
+    text-shadow: none;
+}
+
+/* Ajuste Mobile */
+@media (max-width: 968px) {
+    .section-indicator {
+        display: none; 
+    }
 }
 
 /* =================================================
@@ -729,26 +766,715 @@ section {
 /* =================================================
    ==================== SECTIONS ===================
    ================================================= */
+
 .section-white {
-  width: 100%;
-  min-height: 100vh;
-  background-color: white;
-  color: black;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: "Orbitron", sans-serif;
-  padding: clamp(2rem, 5vw, 3.75rem);
-  text-align: center;
+  width: 100%; min-height: 100vh; background-color: white; color: black;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: "Orbitron", sans-serif; padding: clamp(2rem, 5vw, 3.75rem); text-align: center;
+}
+.section-white h1 {
+  font-family: "Orbitron", sans-serif; font-size: clamp(2rem, 6vw, 3rem);
+  margin-bottom: clamp(1rem, 2vw, 1.25rem); line-height: 1.2;
 }
 
-.section-white h1 {
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(2rem, 6vw, 3rem);
-  margin-bottom: clamp(1rem, 2vw, 1.25rem);
-  line-height: 1.2;
+
+/* =================================================
+   ================ ARTICLES SECTION ===============
+   ================================================= */
+
+.articles-section {
+    background-color: #f4f6f9; 
+    
+    background-image: 
+        /* 1. Luz Central (Spotlight) para dar profundidade e não parecer plano */
+        radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 70%),
+        
+        /* 2. Linhas Horizontais da Grelha (Subtilmente azuis) */
+        linear-gradient(rgba(66, 109, 250, 0.06) 1px, transparent 1px),
+        
+        /* 3. Linhas Verticais da Grelha */
+        linear-gradient(90deg, rgba(66, 109, 250, 0.06) 1px, transparent 1px);
+
+    background-size: 100% 100%, 50px 50px, 50px 50px;
+    color: #000000;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 6rem 5% 4rem clamp(5rem, 6vw, 8rem);
+    position: relative;
+    overflow: hidden;
+
 }
+
+
+.articles-header {
+    margin-bottom: 3rem;
+    position: relative;
+    width: 100%;
+}
+
+.articles-header h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -2px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.articles-header .subtitle {
+    font-family: var(--font-mono);
+    color: var(--primary-color);
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+/* --- INTERFACE LAYOUT (ATUALIZADO PARA HORIZONTAL) --- */
+.articles-interface {
+    display: flex;
+    flex-direction: column; /* Menu em cima, conteúdo em baixo */
+    gap: 2rem;
+    flex-grow: 1;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 600px; 
+}
+
+/* --- HORIZONTAL FUTURISTIC NAV --- */
+.articles-nav-wrapper {
+    width: 100%;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.articles-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    overflow-x: auto; /* Scroll horizontal em mobile */
+    padding-bottom: 5px;
+    scrollbar-width: none; /* Firefox */
+}
+
+.articles-nav::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+/* Linha decorativa fina por baixo do menu */
+.nav-line-decoration {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--primary-color), transparent);
+    opacity: 0.3;
+    margin-top: -1px;
+    z-index: 0;
+}
+
+/* --- BOTÕES DO MENU (TAB STYLE) --- */
+.nav-item {
+    background: rgba(0, 0, 0, 0.03);
+    border: none;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    min-width: max-content;
+    
+    /* O CORTE FUTURISTA (Clip Path) */
+    clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 100%, 0 100%);
+    border-bottom: 1px solid transparent;
+}
+
+/* Pequeno quadrado LED */
+.nav-indicator {
+    width: 6px;
+    height: 6px;
+    background-color: #999;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.nav-num {
+    font-weight: bold;
+    color: #666;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.nav-title {
+    font-family: var(--font-orbitron);
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    color: #888;
+    transition: all 0.3s ease;
+}
+
+/* Hover States */
+.nav-item:hover {
+    background: rgba(66, 109, 250, 0.1);
+}
+.nav-item:hover .nav-num { color: var(--primary-color); }
+.nav-item:hover .nav-title { color: #333; }
+
+/* Active States (Selecionado) */
+.nav-item.active {
+    background: rgba(66, 109, 250, 0.9); /* Azul sólido */
+    transform: translateY(-2px);
+    z-index: 2;
+}
+
+.nav-item.active .nav-indicator {
+    background-color: #fff;
+    box-shadow: 0 0 8px #fff; /* Brilho */
+}
+
+.nav-item.active .nav-num {
+    color: #fff;
+    text-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
+.nav-item.active .nav-title {
+    color: #fff;
+    font-weight: 700;
+}
+
+.articles-display {
+    flex-grow: 1;
+    position: relative;
+    grid-template-areas: "content";
+    overflow: visible; 
+}
+
+.article-panel {
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; 
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 4rem;
+}
+
+.article-panel.active {
+    position: relative; 
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    z-index: 10;
+}
+
+.panel-header {
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--primary-color);
+    padding-left: 1.5rem;
+    text-align: left;
+}
+
+.panel-header h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.panel-meta {
+    font-family: var(--font-mono);
+    color: #666;
+    font-size: 0.8rem;
+    background: #e0e0e0;
+    padding: 2px 8px;
+    text-transform: uppercase;
+}
+
+.cyber-audio-btn {
+    margin-top: 1rem;
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-audio-btn:hover {
+    background: rgba(66, 109, 250, 0.1);
+    box-shadow: 0 0 15px rgba(66, 109, 250, 0.3);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.cyber-audio-btn.playing {
+    background: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+}
+
+.cyber-audio-btn .icon-state {
+    font-size: 0.9rem;
+}
+
+/* O Visualizador de Ondas (Barras) */
+.audio-visualizer {
+    display: flex;
+    gap: 3px;
+    height: 12px;
+    align-items: flex-end;
+}
+
+.audio-visualizer span {
+    width: 3px;
+    height: 20%;
+    background-color: currentColor;
+    transition: height 0.2s ease;
+}
+
+/* Animação quando está a tocar */
+.cyber-audio-btn.playing .audio-visualizer span {
+    animation: sound-wave 1s infinite ease-in-out;
+}
+
+.cyber-audio-btn.playing .audio-visualizer span:nth-child(1) { animation-delay: 0.0s; }
+.cyber-audio-btn.playing .audio-visualizer span:nth-child(2) { animation-delay: 0.1s; }
+.cyber-audio-btn.playing .audio-visualizer span:nth-child(3) { animation-delay: 0.2s; }
+.cyber-audio-btn.playing .audio-visualizer span:nth-child(4) { animation-delay: 0.3s; }
+.cyber-audio-btn.playing .audio-visualizer span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes sound-wave {
+    0%, 100% { height: 20%; }
+    50% { height: 100%; }
+}
+
+/* Texto do botão */
+.text-state {
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* --- IMAGEM BANNER PRINCIPAL (FIXA) --- */
+.tech-image-placeholder {
+  width: 100%;
+  
+  height: 250px !important;
+  min-height: 250px !important;
+  max-height: 250px !important;
+  flex: 0 0 250px !important; 
+  background: #0a0a0a;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+  border: 1px solid #333;
+  overflow: hidden; 
+}
+
+.tech-image-placeholder.inline-visual {
+    height: 150px !important;
+    min-height: 150px !important;
+    max-height: 150px !important;  
+    flex: 0 0 150px !important;   
+    margin: 2rem 0;
+    border: 1px dashed #444;
+    width: 100%;
+    break-inside: avoid;
+}
+
+.tech-overlay {
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 1px dashed rgba(255,255,255,0.15);
+}
+
+.corner {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-color: var(--primary-color);
+    border-style: solid;
+}
+.top-left { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.top-right { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.bottom-left { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.bottom-right { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+.placeholder-text {
+    color: var(--primary-color);
+    font-family: var(--font-mono);
+    animation: pulse 2s infinite;
+    letter-spacing: 1px;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--primary-color); }
+    50% { opacity: 0.5; text-shadow: none; }
+}
+
+.panel-content {
+    font-family: var(--font-sans);
+    line-height: 1.8;
+    columns: 2; 
+    column-gap: 3rem;
+    color: #333;
+    text-align: justify;
+}
+
+.panel-content p { margin-bottom: 1.5rem; }
+
+/* --- ZONA DE REFERÊNCIAS --- */
+.references-container {
+    margin-top: 3rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 1rem;
+    width: 100%;
+}
+
+.ref-toggle {
+    background: none;
+    border: 1px solid #ccc;
+    color: #333;
+    padding: 10px 20px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ref-toggle:hover {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+.ref-list {
+    list-style: none;
+    max-height: 0; /* Começa fechado */
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    background: rgba(0,0,0,0.03);
+    margin-top: 10px;
+}
+
+.ref-list.active {
+    max-height: 500px; /* Altura suficiente para mostrar tudo ao abrir */
+}
+
+.ref-list li {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 10px 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    line-height: 1.4;
+    color: #555;
+}
+
+.ref-list li:last-child {
+    border-bottom: none;
+}
+
+.ref-id {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.ref-list a {
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px dotted #999;
+    transition: color 0.2s;
+}
+
+.ref-list a:hover {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* =================================================
+   ================= REPORTS SECTION ===============
+   ================================================= */
+
+.reports-section {
+    background-color: var(--dark-bg);
+    color: white;
+    padding: 6rem 5%;
+    position: relative;
+    /* Fundo com grelha subtil */
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.reports-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.reports-header h1 {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    text-shadow: 0 0 20px rgba(66, 109, 250, 0.5);
+    color: white;
+}
+
+.reports-header .subtitle {
+    font-family: var(--font-mono);
+    color: var(--primary-color);
+    letter-spacing: 2px;
+}
+
+.reports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- REPORT CARD --- */
+.report-card {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid #333;
+    backdrop-filter: blur(10px);
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform-style: preserve-3d;
+}
+
+.report-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(66, 109, 250, 0.15);
+    transform: translateY(-5px);
+}
+
+.card-status {
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    z-index: 10;
+}
+.card-status.active { background: #00ff00; box-shadow: 0 0 10px #00ff00; }
+.card-status.warning { background: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+.card-status.offline { background: #ff0000; box-shadow: 0 0 10px #ff0000; }
+
+.report-visual {
+    height: 180px;
+    background: #000;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #333;
+    transform: translateZ(20px);
+}
+
+.scan-grid {
+    position: absolute;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 19px,
+        rgba(66, 109, 250, 0.1) 20px
+    );
+    animation: scanMove 3s linear infinite;
+}
+
+@keyframes scanMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+}
+
+.loc-code {
+    font-family: var(--font-mono);
+    color: var(--primary-color);
+    background: rgba(0,0,0,0.7);
+    padding: 5px 10px;
+    border: 1px solid var(--primary-color);
+    font-size: 0.8rem;
+    z-index: 2;
+}
+
+.report-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.report-header-row h3 {
+    margin-bottom: 0;
+    font-size: 1.1rem; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 65%; 
+}
+
+.loc-badge {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--primary-color); 
+    border: 1px solid var(--primary-color);
+    background: rgba(66, 109, 250, 0.1);
+    padding: 4px 8px;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(66, 109, 250, 0.2);
+    white-space: nowrap;
+    margin-bottom: 0.5rem;
+}
+
+.report-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transform: translateZ(10px);
+}
+
+.report-body h3 {
+    font-family: var(--font-orbitron);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-align: left;
+}
+
+.report-body p {
+    font-family: var(--font-sans);
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+    flex-grow: 1;
+    text-align: left;
+}
+
+
+
+/* --- DUAL ACTIONS --- */
+.report-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-action {
+    flex: 1;
+    padding: 10px;
+    font-family: var(--font-orbitron);
+    font-size: 0.7rem;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn-action.primary {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+.btn-action.primary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-action.secondary {
+    border-color: #555;
+    color: #777;
+}
+.btn-action.secondary:hover {
+    border-color: #fff;
+    color: #fff;
+}
+
+.slider-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* A Imagem de fundo */
+.slider-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cobre a área sem distorcer */
+    z-index: 0;        /* Fica atrás da grelha e do texto */
+    transition: opacity 0.3s ease; /* Suaviza a troca de imagens */
+}
+
+/* Garante que os elementos tech fiquem acima da foto */
+.slider-container .scan-grid,
+.slider-container .loc-code {
+    z-index: 2;
+    pointer-events: none; /* Deixa clicar nas setas sem o texto atrapalhar */
+}
+
+/* Estilo das Setas */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    font-family: var(--font-orbitron);
+    font-size: 1.2rem;
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0; /* Escondido por defeito */
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.slider-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 0 10px var(--primary-color);
+}
+
+.slider-btn.prev { left: 10px; }
+.slider-btn.next { right: 10px; }
+
+/* Mostrar setas quando o rato passa por cima do visual */
+.slider-container:hover .slider-btn {
+    opacity: 1;
+}
+
 
 /* =================================================
    ================== MEDIA QUERIES ================
@@ -756,6 +1482,18 @@ section {
 
 /* TABLET (max-width: 968px) */
 @media (max-width: 968px) {
+
+  .articles-section {
+        /* No Tablet/Mobile, voltamos ao padding normal pois o menu lateral muda */
+        padding: 6rem 5% 4rem 5%;
+        text-align: center; /* Opcional: Centra o cabeçalho em ecrãs menores */
+    }
+    
+    /* Ajuste extra para centralizar a interface se necessário */
+    .articles-interface {
+        width: 100%;
+    }
+    
   .nav-links {
     left: 30%;
   }
@@ -778,6 +1516,10 @@ section {
 
 /* MOBILE TABLET (max-width: 768px) */
 @media (max-width: 768px) {
+
+  .panel-content { columns: 1; }
+  .articles-nav { padding-bottom: 15px; }
+
   .splash-screen {
     display: none;
   }
@@ -785,6 +1527,13 @@ section {
   section {
     padding-top: 3rem;
   }
+
+  .article-card {
+        padding: 1.5rem;
+    }
+    .tech-image-placeholder {
+        height: 180px;
+    }
 
   .navbar {
     padding: 0 clamp(0.75rem, 3vw, 1.5rem);
@@ -1031,3 +1780,4 @@ section {
     margin-bottom: 0.75rem;
   }
 }
+
