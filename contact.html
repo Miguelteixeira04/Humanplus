@@ -3,365 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human+ | Contacts</title>
+    <title>Human+ | Secure Comms</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;500;700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="build/static/css/main.0f82d74d.css">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#426dfa',
-                        dark: '#050505'
-                    },
-                    fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        mono: ['Roboto Mono', 'monospace'],
-                        montserrat: ['Montserrat', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Space+Grotesk:wght@300;400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 
     <style>
-        :root {
-            --primary-color: #426dfa;
+        /* Estilos Específicos para Contact */
+        .contact-section {
+            min-height: 100vh;
+            padding: 120px var(--spacing) 60px;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        @keyframes glow-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .contact-card {
+            display: grid; grid-template-columns: 1fr 1.5fr;
+            width: 100%; max-width: 1200px;
+            background: #fff;
+            border: 1px solid var(--text-main);
+            box-shadow: 20px 20px 0 rgba(0,0,0,0.1); /* Sombra sólida técnica */
+        }
+
+        /* Coluna Info (Preta) */
+        .info-col {
+            background: var(--text-main); color: #fff;
+            padding: 60px; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .info-col h1 { font-family: var(--font-orbitron); font-size: 2.5rem; margin-bottom: 10px; }
+        .info-subtitle { font-family: var(--font-mono); font-size: 0.8rem; color: #888; margin-bottom: 40px; }
+        
+        .info-group { margin-bottom: 30px; }
+        .info-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 5px; display: block; }
+        .info-value { font-family: var(--font-grotesk); font-size: 1rem; color: #ddd; }
+        
+        .social-links a { color: #888; text-decoration: none; margin-right: 15px; font-family: var(--font-mono); font-size: 0.8rem; transition: color 0.3s; }
+        .social-links a:hover { color: #fff; }
+
+        /* Coluna Formulário (Branca) */
+        .form-col { padding: 60px; position: relative; }
+        /* Padrão de fundo subtil */
+        .form-col::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: radial-gradient(#ccc 1px, transparent 1px);
+            background-size: 20px 20px; opacity: 0.2; pointer-events: none;
+        }
+
+        .form-group { margin-bottom: 40px; position: relative; z-index: 1; }
+        .form-label {
+            display: block; font-family: var(--font-orbitron); font-size: 0.8rem; 
+            font-weight: 700; color: var(--text-main); 
         }
         
-        /* --- Global Styles --- */
-        body { 
-            background-color: #000000; 
-            color: black; 
-            font-family: "Orbitron", sans-serif;
-            overflow-x: hidden; 
+        .form-input {
+            width: 100%; background: transparent;
+            border: none; border-bottom: 2px solid #ccc;
+            padding: 10px 0; font-family: var(--font-grotesk); font-size: 1rem;
+            outline: none; transition: border-color 0.3s;
         }
+        .form-input:focus { border-bottom-color: var(--accent); }
+        .form-input::placeholder { color: #aaa; }
 
-        /* --- Background Elements --- */
-        #react-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
+        .btn-send {
+            background: var(--text-main); color: #fff;
+            border: none; padding: 15px 40px;
+            font-family: var(--font-orbitron); font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s;
+            float: right;
         }
+        .btn-send:hover { background: var(--accent); transform: translateY(-2px); }
 
-        .tech-grid { 
-            position: fixed; 
-            inset: 0; 
-            background-image: radial-gradient(#fff 1px, transparent 1px);
-            background-size: 40px 40px; 
-            opacity: 0.03; 
-            pointer-events: none; 
-            z-index: 1; 
-        }
-
-        /* --- Logo Styles --- */
-        .logo {
-            font-weight: bold;
-            font-size: clamp(1.5rem, 4vw, 2.25rem);
-            color: white;
-            letter-spacing: clamp(1px, 0.5vw, 3px);
-            position: relative;
-            z-index: 2;
-            transition: color 0.4s ease;
-        }
-
-        .logo a {
-            text-decoration: none;
-            color: inherit;
-            transition: color 0.4s ease;
-        }
-
-        .logo:hover a {
-            background: linear-gradient(90deg, #ffffff, #426dfa, #ffffff, #426dfa);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow-shift 3s ease-in-out infinite;
-        }
-
-        /* --- Navbar Styles --- */
-        .nav-links, .nav-right {
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
-            transition: all 0.5s ease;
-        }
-
-        .navbar:hover .nav-links,
-        .navbar:hover .nav-right,
-        .navbar.locked .nav-links,
-        .navbar.locked .nav-right {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            pointer-events: auto !important;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: clamp(1rem, 3vw, 2.5rem);
-            position: absolute;
-            top: 40%;
-            left: 40%;
-            transform: translateY(-50%);
-            transition: all 0.5s ease;
-        }
-
-        .nav-links li {
-            position: relative;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: clamp(0.75rem, 1.2vw, 0.875rem);
-            letter-spacing: clamp(0.5px, 0.3vw, 1px);
-            padding: 8px 0;
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .nav-links a::before {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #83bcfd, #426dfa);
-            transition: width 0.4s ease;
-            box-shadow: 0 0 10px rgba(131, 188, 253, 0.8);
-        }
-
-        .nav-links a:hover {
-            color: grey;
-            text-shadow: 0 0 10px rgba(131, 188, 253, 0.8);
-        }
-
-        .nav-links a:hover::before {
-            width: 100%;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            top: 30%;
-            right: clamp(1rem, 5vw, 2.5rem);
-            transform: translateY(-50%);
-            gap: clamp(9rem, 4vw, 3rem);
-        }
-
-        /* --- Search Bar --- */
-        .search {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .search-input {
-            width: 0;
-            opacity: 0;
-            padding: 0;
-            border: none;
-            outline: none;
-            background: transparent;
-            font-size: clamp(12px, 1.5vw, 14px);
-            transition: all 0.3s ease;
-            color: white;
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .search.active {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 6px 12px;
-        }
-
-        .search.active .search-input {
-            width: clamp(100px, 20vw, 160px);
-            opacity: 1;
-            padding-left: 6px;
-        }
-
-        .icon {
-            width: clamp(16px, 3vw, 22px);
-            height: clamp(16px, 3vw, 22px);
-            object-fit: contain;
-            transition: all 0.3s ease;
-        }
-
-        /* --- Pin Button --- */
-        .pin {
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent; 
-            background: transparent;
-        }
-
-        /* ADICIONADO: .pin.active para mostrar o fundo azul */
-        .pin.active {
-            background-color: rgba(66, 109, 250, 0.25) !important;
-            border: 1px solid var(--primary-color) !important;
-            box-shadow: 0 0 15px rgba(66, 109, 250, 0.3);
-        }
-
-        .pin.active img {
-            filter: drop-shadow(0 0 5px var(--primary-color));
-        }
-
-        /* --- Mobile --- */
-        .mobile-menu, 
-        .mobile-menu-icon { 
-            display: none; 
-        }
-
-        /* --- Contact Form Specifics --- */
-        .contact-wrapper { 
-            box-shadow: 20px 20px 0px rgba(0,0,0,0.1); 
-            z-index: 10;
-            position: relative;
-        }
-        
-        .form-input:focus { 
-            border-bottom-color: var(--primary-color); 
-            background: rgba(66,109,250,0.05); 
+        @media (max-width: 900px) {
+            .contact-card { grid-template-columns: 1fr; }
+            .info-col { padding: 40px; }
+            .form-col { padding: 40px; }
         }
     </style>
 </head>
-
 <body>
 
-    <div id="react-background"></div>
-    <div class="tech-grid"></div>
-
-    <nav class="navbar fixed w-full h-20 flex items-center justify-between px-4 md:px-10 z-50 text-white">
-        <div class="logo">
-            <a href="index.html">human+</a>
-        </div>
-        
-        <ul class="nav-links">
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="about.html">ABOUT</a></li>
-            <li><a href="contact.html">CONTACTS</a></li>
-        </ul>
-        
-        <div class="nav-right">
-            <div class="pin">
-                <img src="icons/pin.png" alt="Pin" class="icon">
-            </div>
-        </div>
-
-        <div class="mobile-menu-icon">
-            <span></span><span></span><span></span>
-        </div>
-
-        <div class="mobile-menu">
-            <ul>
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="about.html">ABOUT</a></li>
-                <li><a href="contact.html">CONTACTS</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div id="mobileNav" class="fixed inset-0 bg-black/95 z-40 flex flex-col items-center justify-center transform translate-x-full transition-transform duration-300 md:hidden">
-        <a href="index.html" class="text-2xl py-4">HOME</a>
-        <a href="about.html" class="text-2xl py-4 text-primary">ABOUT</a>
-        <a href="index.html#articles" class="text-2xl py-4">ARTICLES</a>
-        <a href="contact.html" class="text-2xl py-4">CONTACTS</a>
-        <button class="mt-8 border px-4 py-2" onclick="document.getElementById('mobileNav').classList.add('translate-x-full')">
-            CLOSE
-        </button>
+    <div class="grid-bg">
+        <div class="line-v" style="left: 20%"></div>
+        <div class="line-v" style="left: 40%"></div>
+        <div class="line-v" style="left: 60%"></div>
+        <div class="line-v" style="left: 80%"></div>
     </div>
 
-    <section class="min-h-screen pt-24 pb-12 flex items-center justify-center px-4 relative z-10">
-        
-        <div class="contact-wrapper w-full max-w-5xl grid grid-cols-1 md:grid-cols-5 bg-white border-2 border-black">
-            
-            <div class="md:col-span-2 bg-black text-white p-8 md:p-12 flex flex-col justify-between min-h-[400px]">
-                <div>
-                    <h1 class="text-3xl md:text-4xl font-bold mb-2">CONTACTS</h1>
-                    <p class="font-mono text-xs text-gray-500 mb-10">ESTABLISH SECURE CONNECTION</p>
-                    
-                    <div class="space-y-8">
-                        <div>
-                            <label class="text-xs font-bold text-primary block mb-1 tracking-widest">LOCATION</label>
-                            <p class="font-mono text-sm text-gray-300">Coimbra, FCTUC<br>Portugal</p>
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-primary block mb-1 tracking-widest">FREQUENCY</label>
-                            <p class="font-mono text-sm text-gray-300">contact@humanplus.ai</p>
-                        </div>
-                        <div>
-                            <label class="text-xs font-bold text-primary block mb-1 tracking-widest">SOCIAL</label>
-                            <div class="flex gap-4 mt-2">
-                                <a href="#" class="text-gray-400 hover:text-white">TW</a>
-                                <a href="#" class="text-gray-400 hover:text-white">IG</a>
-                                <a href="#" class="text-gray-400 hover:text-white">LN</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-12 pt-6 border-t border-gray-800">
-                    <p class="font-mono text-[10px] text-gray-600">© 2025 Human+. All rights reserved<br></p>
-                </div>
-            </div>
-
-            <div style="background-color: rgba(226, 226, 226, 0.568);" class="md:col-span-3 p-8 md:p-12">
-                <form onsubmit="event.preventDefault(); alert('Transmission Sent Successfully.');">
-                    <div class="mb-8">
-                        <label class="block font-orbitron text-xs font-black text-black mb-2">IDENTIFIER (NAME)</label>
-                        <input type="text" class="w-full bg-transparent border-b-2 border-gray-300 p-3 font-montserrat focus:outline-none focus:border-blue-600 transition-colors" placeholder="Type your name">
-                    </div>
-                    <div class="mb-8">
-                        <label class="block font-orbitron text-xs font-black text-black mb-2">CONTACT FREQUENCY (EMAIL)</label>
-                        <input type="email" class="w-full bg-transparent border-b-2 border-gray-300 p-3 font-montserrat focus:outline-none focus:border-blue-600 transition-colors" placeholder="Type your email">
-                    </div>
-                    <div class="mb-8">
-                        <label class="block font-orbitron text-xs font-black text-black mb-2">DATA PACKET (MESSAGE)</label>
-                        <textarea rows="4" class="w-full bg-transparent border-b-2 border-gray-300 p-3 font-montserrat focus:outline-none focus:border-blue-600 transition-colors resize-none" placeholder="Enter message content..."></textarea>
-                    </div>
-                    
-                    <div class="flex justify-end">
-                        <button type="submit" class="bg-black text-white px-8 py-4 font-bold tracking-widest hover:bg-blue-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                            SEND
-                        </button>
-                    </div>
-                </form>
-            </div>
-
+    <nav class="doc-nav">
+        <div class="nav-left">
+            <span class="brand"><a href="index.html" style="text-decoration:none; color:inherit;">HUMAN<span class="plus">+</span></a></span>
+            <span class="meta-tag">SECURE_CHANNEL // ENCRYPTED</span>
         </div>
+        <ul class="nav-links">
+            <li><a href="index.html">01. DATA</a></li>
+            <li><a href="index.html#articles">02. REPORTS</a></li>
+            <li><a href="index.html#critics">03. ANALYSIS</a></li>
+            <li><a href="about.html">04. ABOUT</a></li>
+            <li><a href="contact.html" style="color:var(--accent)">05. CONTACT</a></li>
+        </ul>
+    </nav>
 
-    </section>
+    <main>
+        <section class="contact-section">
+            <div class="contact-card">
+                
+                <div class="info-col">
+                    <div>
+                        <h1>CONTACT</h1>
+                        <p class="info-subtitle">ESTABLISH CONNECTION</p>
+                        
+                        <div class="info-group">
+                            <span class="info-label">HQ LOCATION</span>
+                            <span class="info-value">Coimbra, FCTUC<br>Portugal</span>
+                        </div>
+                        
+                        <div class="info-group">
+                            <span class="info-label">DIGITAL FREQUENCY</span>
+                            <span class="info-value">contact@humanplus.ai</span>
+                        </div>
+                    </div>
 
-    <script src="build/static/js/main.7e9e2682.js" defer></script>
-    <script src="script.js"></script>
+                    <div class="social-links">
+                        <a href="#">TWITTER_X</a>
+                        <a href="#">INSTAGRAM</a>
+                        <a href="#">LINKEDIN</a>
+                    </div>
+                </div>
+
+                <div class="form-col">
+                    <form onsubmit="event.preventDefault(); alert('DATA PACKET TRANSMITTED.');">
+                        <div class="form-group">
+                            <label class="form-label">IDENTIFIER (NAME)</label>
+                            <input type="text" class="form-input" placeholder="Enter identification...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">RETURN ADDRESS (EMAIL)</label>
+                            <input type="email" class="form-input" placeholder="user@domain.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">DATA PACKET (MESSAGE)</label>
+                            <textarea rows="3" class="form-input" placeholder="Input transmission content..." style="resize:none"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-send">TRANSMIT >></button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="clean-footer">
+            <div class="f-left">HUMAN+ ARCHIVE</div>
+            <div class="f-right">© 2025</div>
+        </footer>
+    </main>
 
 </body>
 </html>

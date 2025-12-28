@@ -3,536 +3,556 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human+</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Human+ | Scientific Archive</title>
     
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Space+Grotesk:wght@300;400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    
 </head>
 <body>
 
-    <div id="splash-screen" class="splash-screen">
-        <div class="splash-content">
-            <span id="splash-plus" class="splash-plus">+</span>
-            <span id="splash-text" class="splash-text"></span>
+    <div id="lightbox" class="lightbox-overlay">
+        <button class="lb-arrow" id="lb-prev">❮</button>
+        <div class="lightbox-content">
+            <span class="close-lightbox">× CLOSE_SYSTEM</span>
+            <img id="lightbox-img" src="" alt="Fullscreen View">
+            <div class="lightbox-caption"><span id="lb-counter">IMG 01/01</span> // FULL RESOLUTION SCAN</div>
         </div>
-    </div> 
+        <button class="lb-arrow" id="lb-next">❯</button>
+    </div>
 
+    <div class="grid-bg">
+        <div class="line-v" style="left: 20%"></div>
+        <div class="line-v" style="left: 40%"></div>
+        <div class="line-v" style="left: 60%"></div>
+        <div class="line-v" style="left: 80%"></div>
+    </div>
 
-    <section id="home" class="container">
-        <div id="react-background"></div>
-        <nav class="navbar">
-            <div class="logo"><a href="#home">human+</a></div>
-            <ul class="nav-links">
-                <li><a href="#home">HOME</a></li>
-                <li><a href="about.html">ABOUT</a></li>
-                <li><a href="contact.html">CONTACTS</a></li>
-            </ul>
+    <nav class="doc-nav">
+        <div class="nav-left">
+            <span class="brand">human<span class="plus">+</span></span>
+            <span class="meta-tag">REV. 2025 // PUBLIC ACCESS</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#articles">01. DATA</a></li>
+            <li><a href="#reports">02. LOCATIONS</a></li>
+            <li><a href="#critics">03. ANALYSIS</a></li>
+            <li><a href="about.html">04. ABOUT</a></li>
+            <li><a href="contact.html">05. CONTACT</a></li>
+        </ul>
+    </nav>
 
-            <div class="section-indicator">
-                <div class="tech-line"></div> <nav class="indicator-nav">
-                    <a href="#home" class="indicator-link active" id="link-home">
-                        <span class="nav-num">01</span>
-                        <div class="marker-wrapper">
-                            <span class="tech-marker"></span>
-                        </div>
-                        <span class="nav-label">HOME_BASE</span>
-                    </a>
-
-                    <a href="#articles" class="indicator-link" id="link-articles">
-                        <span class="nav-num">02</span>
-                        <div class="marker-wrapper">
-                            <span class="tech-marker"></span>
-                        </div>
-                        <span class="nav-label">ARCHIVES</span>
-                    </a>
-
-                    <a href="#reports" class="indicator-link" id="link-reports">
-                        <span class="nav-num">03</span>
-                        <div class="marker-wrapper">
-                            <span class="tech-marker"></span>
-                        </div>
-                        <span class="nav-label">GLOBAL_DATA</span>
-                    </a>
-
-                    <a href="#critics" class="indicator-link" id="link-critics">
-                        <span class="nav-num">04</span>
-                        <div class="marker-wrapper">
-                            <span class="tech-marker"></span>
-                        </div>
-                        <span class="nav-label">CRITICAL_LOG</span>
-                    </a>
-
-                    <a href="#conclusion" class="indicator-link" id="link-conclusion">
-                        <span class="nav-num">05</span>
-                        <div class="marker-wrapper">
-                            <span class="tech-marker"></span>
-                        </div>
-                        <span class="nav-label">SHUTDOWN</span>
-                    </a>
-                </nav>
-            </div>
-            <div class="nav-right">
-                <div class="search">
-                    <img src="icons/search.png" alt="Search" class="icon search-icon">
-                    <input type="text" class="search-input" placeholder="Search for a word..." />
-                </div>
-                <div class="pin">
-                    <img src="icons/pin.png" alt="Pin" class="icon">
+    <main>
+        <div class="scroll-zoom-wrapper">
+            <div class="sticky-hero">
+                <canvas id="tech-canvas"></canvas>
+                <div class="hero-content-center">
+                    <h1 class="orbitron-brand" id="hero-title" data-value="human+">human<span class="plus-accent"> +</span></h1>
+                    <div class="hero-subtitle">THE FUTURE HAS ALREADY BEGUN</div>
+                    <div class="scroll-hint">[ SCROLL TO ENTER SYSTEM ]</div>
                 </div>
             </div>
-            <div class="mobile-menu-icon">
-                <span></span><span></span><span></span>
-            </div>
-            <div class="mobile-menu">
-                <ul>
-                    <li><a href="#home">HOME</a></li>
-                    <li><a href="about.html">ABOUT</a></li>
-                    <li><a href="contact.html">CONTACTS</a></li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="center-content">
-            <div class="text-medium">ARTIFICIAL INTELLIGENCE</div>
-            <div class="text-large">FUTURE</div>
-            <div class="text-small">IT HAS ALREADY BEGUN.</div>
-            <div class="text-small-bold1">EXPLORE ETHICAL DILEMMAS, AND HUMAN CHALLENGES OF THE NEW</div>
-            <div class="text-small-bold2">TECHNOLOGICAL REVOLUTION.</div>
-            <button class="scroll-button" onclick="scrollToSection('articles')">↓</button>
-        </div>
-    </section>
-
-    <section id="articles" class="section-white articles-section">
-        <div class="articles-header">
-            <h1>ARTICLES</h1>
-            <p class="subtitle">EXPLORE_KNOWLEDGE //</p>
         </div>
 
-        <div class="articles-interface">
-        
-            <div class="articles-nav-wrapper">
-                <div class="articles-nav">
-                    <button class="nav-item active" data-target="art-01">
-                        <span class="nav-indicator"></span>
-                        <span class="nav-num">01</span>
-                        <span class="nav-title">HISTORY</span>
-                    </button>
-                    <button class="nav-item" data-target="art-02">
-                        <span class="nav-indicator"></span>
-                        <span class="nav-num">02</span>
-                        <span class="nav-title">ETHICS</span>
-                    </button>
-                    <button class="nav-item" data-target="art-03">
-                        <span class="nav-indicator"></span>
-                        <span class="nav-num">03</span>
-                        <span class="nav-title">DECISION</span>
-                    </button>
-                    <button class="nav-item" data-target="art-04">
-                        <span class="nav-indicator"></span>
-                        <span class="nav-num">04</span>
-                        <span class="nav-title">WORKFORCE</span>
-                    </button>
-                    <button class="nav-item" data-target="art-05">
-                        <span class="nav-indicator"></span>
-                        <span class="nav-num">05</span>
-                        <span class="nav-title">CULTURE</span>
-                    </button>
-                    <button class="nav-item" data-target="art-06">
-                        <span class="nav-indicator"></span>
-                        <span class="nav-num">06</span>
-                        <span class="nav-title">GEOPOLITICS</span>
-                    </button>
+        <div class="main-content-start">
+
+            <section id="articles" class="section-articles">
+                <div class="section-header">
+                    <h2>KNOWLEDGE_BASE</h2>
+                    <div class="line-h"></div>
                 </div>
-                <div class="nav-line-decoration"></div>
-            </div>
 
-            <div class="articles-display">
+                <div class="file-system">
+                    
+                    <article class="file-item">
+                        <div class="file-header" id="header-01">
+                            <span class="file-id">DOC_01</span>
+                            <h3 class="file-title">THE TECHNOLOGICAL REVOLUTION</h3><span class="file-category">AI_HISTORY</span> 
+                            <span class="file-toggle">+</span>
+                        </div>
+                        <div class="file-content">
+                            <div class="timeline-container">
+                                <div class="timeline-track-bg"></div>
+                                <div class="timeline-track-fill" id="progress-line"></div>
 
-                <article id="art-01" class="article-panel active">
-                    <div class="panel-header">
-                        <h2 class="scramble-text">THE TECHNOLOGICAL REVOLUTION</h2>
-                        <span class="panel-meta">FROM_TURING_TO_DEEP_LEARNING</span>
+                                <div class="timeline-node">
+                                    <div class="node-year" data-year-mobile="1950">1950</div>
+                                    <div class="node-content">
+                                        <div class="node-text">
+                                            <h4>THE TURING TEST</h4>
+                                        </div>
+                                        <div class="node-visual">
+                                            <img src="https://www.leanix.net/hs-fs/hubfs/undefined-2.jpeg?width=550&height=309&name=undefined-2.jpeg" alt="Turing">
+                                        </div>
+                                        <div class="node-text">
+                                            <p>It all began with a simple question: "Can machines think?" In 1950, <strong>Alan Turing</strong> published his seminal paper "Computing Machinery and Intelligence," introducing what is now known as the Turing Test [24].</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <button class="cyber-audio-btn" onclick="toggleArticleAudio(this)">
-                            <span class="icon-state">▶</span>
-                            <span class="text-state">INIT_AUDIO_LOG</span>
-                            <div class="audio-visualizer">
-                                <span></span><span></span><span></span><span></span><span></span>
+                                <div class="timeline-node">
+                                    <div class="node-year" data-year-mobile="1956">1956</div>
+                                    <div class="node-content">
+                                        <div class="node-text">
+                                            <h4>BIRTH OF AI</h4>
+                                        </div>
+                                        <div class="node-visual">
+                                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&auto=format&fit=crop" alt="Dartmouth">
+                                        </div>
+                                        <div class="node-text">
+                                            <p>The field was officially born at the historic <strong>Dartmouth Summer Research Project</strong>. Organized by John McCarthy, Marvin Minsky, Nathaniel Rochester, and Claude Shannon, this workshop coined the term "Artificial Intelligence" [25].</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-node">
+                                    <div class="node-year" data-year-mobile="2012">2012</div>
+                                    <div class="node-content">
+                                        <div class="node-text">
+                                            <h4>DEEP LEARNING</h4>
+                                        </div>
+                                        
+                                        <div class="node-visual" style="background: #ffffff;">
+                                            <img src="/fotos/Articles/web.png" alt="Deep Learning" style="object-fit: contain; padding: 10px;">
+                                        </div>
+                                        
+                                        <div class="node-text">
+                                            <p>After decades of "AI Winter," the landscape changed forever with <strong>AlexNet's victory</strong> in the ImageNet challenge [7]. This proved that neural networks driven by Big Data and GPUs could perceive the world.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="timeline-node">
+                                    <div class="node-year" data-year-mobile="2023+">2023+</div>
+                                    <div class="node-content">
+                                        <div class="node-text">
+                                            <h4>GENERATIVE ERA</h4>
+                                        </div>
+                                        <div class="node-visual">
+                                            <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=600&auto=format&fit=crop" alt="Generative AI">
+                                        </div>
+                                        <div class="node-text">
+                                            <p>We have moved from systems that classify data to systems that <strong>create</strong> it. With the release of models like GPT-4 and Midjourney, AI demonstrated the ability to write code, compose poetry, and generate photorealistic imagery.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="refs">
+                                    <small>REFS: [06] Ponti et al. (2017) | [07] Krizhevsky et al. (2012) | [24] Turing (1950) | [25] McCarthy et al. (1956) | [29] DSA</small>
+                                </div>
+
                             </div>
-                        </button>
-                    </div>
-                    <div class="tech-image-placeholder">
-                        <div class="tech-overlay">
-                            <span class="corner top-left"></span><span class="corner top-right"></span>
-                            <span class="corner bottom-left"></span><span class="corner bottom-right"></span>
                         </div>
-                        <span class="placeholder-text">[ RENDER: TURING_MACHINE_V1 ]</span>
-                    </div>
-                    <div class="panel-content">
-                        <p><strong>From Origins to Modernity:</strong> Artificial Intelligence represents one of the most profound transformations in human history. Its roots trace back to 1950, when <strong>Alan Turing</strong>, considered the father of computer science, published the seminal paper "Computing Machinery and Intelligence". He proposed the famous <strong>"Turing Test"</strong> to evaluate if a machine could exhibit intelligent behavior indistinguishable from a human [24]. Turing visioned machines capable of thinking and learning before the term even existed.</p>
-                        <p>The field was formally born at the historic <strong>Dartmouth Conference in 1956</strong>. Organized by John McCarthy, this summer gathering brought together pioneers to explore the possibility of "thinking machines", discussing learning, reasoning, and language [25].</p>
-                        
-                        <div class="tech-image-placeholder inline-visual">
-                            <div class="tech-overlay"></div>
-                            <span class="placeholder-text">[ DATA: NEURAL_NET_LAYERS ]</span>
+                    </article>
+
+                    <article class="file-item">
+                        <div class="file-header" id="header-02">
+                            <span class="file-id">DOC_02</span>
+                            <h3 class="file-title">DIGITAL MORAL FOUNDATIONS</h3><span class="file-category">ETHICS</span>
+                            <span class="file-toggle">+</span>
                         </div>
+                        <div class="file-content">
+                            <div class="interactive-container">
+                                <div class="info-block">
+                                    <div class="block-visual">
+                                        <img src="https://images.unsplash.com/photo-1507146426996-ef05306b995a?q=80&w=1000&auto=format&fit=crop" class="article-img" alt="Ethics">
+                                        <span class="img-caption">FIG 1.2: MORAL_DILEMMA</span>
+                                    </div>
+                                    <div class="block-text">
+                                        <h4>CLASSICAL THEORIES</h4>
+                                        <p>As algorithms mediate reality, we must revisit ancient debates. <strong>Consequentialism</strong> vs <strong>Deontology</strong> [16]. The challenge is applying these human-centric frameworks to cold, autonomous code.</p>
+                                    </div>
+                                </div>
 
-                        <p><strong>The Rise of Deep Learning:</strong> While Machine Learning (ML) allows systems to learn from experience, <strong>Deep Learning (DL)</strong> utilizes multi-layered neural networks to solve complex problems [6]. The exponential advance of these technologies was fueled by the emergence of <strong>Big Data</strong> and parallel processing in <strong>GPUs</strong> around 2013, driven by flagship projects like IBM Watson and Google DeepMind [29].</p>
-                        <p><strong>The AlexNet Moment:</strong> In 2012, the landscape changed forever with <strong>AlexNet's victory</strong> in the ImageNet challenge [7]. This Convolutional Neural Network (CNN) reduced error rates from 26.2% to 15.3%, proving that neural networks could perceive the world.</p>
-
-                        <div class="references-container">
-                            <button class="ref-toggle">
-                                <span class="ref-icon">[ + ]</span> ACCESS_SOURCE_DATA
-                            </button>
-                            <ul class="ref-list">
-                                <li><span class="ref-id">[06]</span> Ponti, M. A. & Costa, G. B. P. (2017). <em>Como funciona o Deep Learning.</em> USP.</li>
-                                <li><span class="ref-id">[07]</span> Krizhevsky, A., et al. (2012). <em>ImageNet Classification with Deep CNNs.</em> NIPS 2012.</li>
-                                <li><span class="ref-id">[24]</span> Turing, A. M. (1950). <a href="https://courses.cs.umbc.edu/471/papers/turing.pdf" target="_blank">Computing Machinery and Intelligence. [LINK]</a></li>
-                                <li><span class="ref-id">[25]</span> McCarthy, J., et al. (1956). <em>A Proposal for the Dartmouth Summer Research Project on AI.</em></li>
-                                <li><span class="ref-id">[29]</span> Equipe DSA. <em>Deep Learning Book – Guia Definitivo.</em> Data Science Academy.</li>
-                            </ul>
+                                <div class="info-block">
+                                    <div class="block-text">
+                                        <h4>NEW DILEMMAS</h4>
+                                        <p>Luciano Floridi, from Yale's Digital Ethics Center, argues that technology doesn't just exacerbate old problems but creates <strong>completely new moral dilemmas</strong> [1]. We are no longer just passive users; we are subjects of algorithmic governance.</p>
+                                        <p>Contemporary tech ethics must address four fundamental pillars: Responsibility, Transparency, Privacy, and Justice [3].</p>
+                                        <div class="refs"><small>REFS: [01] Floridi (2024) | [03] Branford et al. (2024) | [16] BCU (2019)</small></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                </article>
+                    </article>
 
-                <article id="art-02" class="article-panel">
-                    <div class="panel-header">
-                        <h2 class="scramble-text">DIGITAL MORAL FOUNDATIONS</h2>
-                        <span class="panel-meta">KANT_VS_ALGORITHMS</span>
-                    </div>
-                    <div class="tech-image-placeholder">
-                        <div class="tech-overlay"></div>
-                        <span class="placeholder-text">[ CONCEPT: ETHICAL_FRAMEWORK_GRID ]</span>
-                    </div>
-                    <div class="panel-content">
-                        <p><strong>Classical Theories in the Digital Age:</strong> As algorithms mediate reality, we must revisit ancient philosophical debates. <strong>Consequentialism</strong> (like Utilitarianism) focuses on maximizing the greatest good for the greatest number. In contrast, <strong>Deontology</strong>, based on Immanuel Kant's philosophy, argues for absolute moral rules and respect for human dignity, regardless of the outcome [16]. The challenge is applying these human-centric frameworks to cold, autonomous code.</p>
-                        
-                        <div class="tech-image-placeholder inline-visual">
-                            <div class="tech-overlay"></div>
-                            <span class="placeholder-text">[ MODEL: TROLLEY_PROBLEM_SIM ]</span>
+                    <article class="file-item">
+                       <div class="file-header" id="header-03">
+                            <span class="file-id">DOC_03</span>
+                            <h3 class="file-title">ALGORITHMIC DECISION</h3><span class="file-category">ETHICS / BIAS</span>
+                            <span class="file-toggle">+</span>
                         </div>
-
-                        <p><strong>Unprecedented Dilemmas:</strong> Luciano Floridi, from Yale's Digital Ethics Center, argues that technology doesn't just exacerbate old problems but creates <strong>completely new moral dilemmas</strong> [1]. We are no longer just passive users; we are subjects of algorithmic governance.</p>
-                        <p>Contemporary tech ethics must address four fundamental pillars: Responsibility, Transparency, Privacy, and Justice [3].</p>
-
-                        <div class="references-container">
-                            <button class="ref-toggle">
-                                <span class="ref-icon">[ + ]</span> ACCESS_SOURCE_DATA
-                            </button>
-                            <ul class="ref-list">
-                                <li><span class="ref-id">[01]</span> Floridi, L. (2024). <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4801799" target="_blank">The Ethics of AI: exacerbated problems... [LINK]</a></li>
-                                <li><span class="ref-id">[03]</span> Branford, J., et al. (2024). <em>The Philosophy and Ethics of AI.</em> Digital Society.</li>
-                                <li><span class="ref-id">[04]</span> Müller, V. C. (2020). <a href="https://plato.stanford.edu/entries/ethics-ai/" target="_blank">Ethics of Artificial Intelligence and Robotics. [LINK]</a></li>
-                                <li><span class="ref-id">[16]</span> Birmingham City Univ. (2019). <a href="https://www.open-access.bcu.ac.uk/5579/" target="_blank">Kantian Ethics in the Age of AI. [LINK]</a></li>
-                            </ul>
+                        <div class="file-content">
+                            <div class="interactive-container">
+                                <div class="info-block">
+                                    <div class="block-visual">
+                                        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=1000&auto=format&fit=crop" class="article-img" alt="Bias">
+                                        <span class="img-caption">FIG 1.3: BLACK_BOX_AI</span>
+                                    </div>
+                                    <div class="block-text">
+                                        <h4>THE BLACK BOX</h4>
+                                        <p>A critical ethical issue identified by Vincent C. Müller is opacity. Many Deep Learning systems function as <strong>"Black Boxes"</strong>—we know the input and the output, but the internal logic remains a mystery [4]. This has led to the demand for <strong>Explainable AI (XAI)</strong> and the legal "Right to Explanation" [13][15].</p>
+                                    </div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="block-text">
+                                        <h4>REAL WORLD BIAS</h4>
+                                        <p><strong>Case Study: Amazon's Recruiting Tool:</strong> In 2015, Amazon scrapped an AI recruiting tool because it was <strong>biased against women</strong>. The system was trained on 10 years of resumes (mostly from men) and effectively "learned" that male candidates were preferable [9].</p>
+                                        <p><strong>Case Study: Apple Card:</strong> In 2019, the Apple Card faced viral backlash due to gender discrimination in credit limits [11].</p>
+                                        <div class="refs"><small>REFS: [09] Dastin (2018) | [13] UFSM (2024) | [17] Wright (2024)</small></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <article id="art-03" class="article-panel">
-                    <div class="panel-header">
-                        <h2 class="scramble-text">ALGORITHMIC DECISION</h2>
-                        <span class="panel-meta">BIAS_DETECTION_SYSTEM</span>
-                    </div>
-                    <div class="tech-image-placeholder">
-                        <div class="tech-overlay"></div>
-                        <span class="placeholder-text">[ DATA: BIAS_GRAPH_ANALYSIS ]</span>
-                    </div>
-                    <div class="panel-content">
-                        <p><strong>The Black Box Problem:</strong> A critical ethical issue identified by Vincent C. Müller is opacity. Many Deep Learning systems function as <strong>"Black Boxes"</strong>—we know the input and the output, but the internal logic remains a mystery [4]. This has led to the demand for <strong>Explainable AI (XAI)</strong> and the legal "Right to Explanation" [13][15].</p>
-                        <p><strong>Case Study: Amazon's Recruiting Tool:</strong> In 2015, Amazon scrapped an AI recruiting tool because it was <strong>biased against women</strong>. The system was trained on 10 years of resumes (mostly from men) and effectively "learned" that male candidates were preferable [9]. This proved that algorithms are not neutral; they can automate and scale historical discrimination.</p>
-                        
-                        <div class="tech-image-placeholder inline-visual">
-                            <div class="tech-overlay"></div>
-                            <span class="placeholder-text">[ SCAN: CREDIT_ALGORITHM_FAIL ]</span>
+                    <article class="file-item">
+                        <div class="file-header" id="header-04">
+                            <span class="file-id">DOC_04</span>
+                            <h3 class="file-title">FUTURE OF WORKFORCE</h3><span class="file-category">SOCIETY</span>
+                            <span class="file-toggle">+</span>
                         </div>
-
-                        <p><strong>Case Study: Apple Card:</strong> In 2019, the Apple Card faced viral backlash due to gender discrimination in credit limits [11]. Algorithms used by banks frequently reject minority applicants at higher rates than white applicants with similar financial profiles [12].</p>
-                        <p><strong>Can Machines be Moral?</strong> Some propose using Kantian "Categorical Imperatives" to program autonomous agents that prioritize the preservation of life over strict legal obedience in extreme scenarios [17][18].</p>
-
-                        <div class="references-container">
-                            <button class="ref-toggle">
-                                <span class="ref-icon">[ + ]</span> ACCESS_SOURCE_DATA
-                            </button>
-                            <ul class="ref-list">
-                                <li><span class="ref-id">[09]</span> Dastin, J. (2018). <a href="https://www.reuters.com/article/world/insight-amazon-scraps-secret-ai-recruiting-tool-that-showed-bias-against-women-idUSKCN1MK0AG" target="_blank">Amazon scraps secret AI recruiting tool... [LINK]</a></li>
-                                <li><span class="ref-id">[11]</span> Portal IDP (2024). <a href="https://portaldeperiodicos.idp.edu.br" target="_blank">Discriminação Algorítmica no Brasil. [LINK]</a></li>
-                                <li><span class="ref-id">[13]</span> UFSM (2024). <a href="https://periodicos.ufsm.br/revistadireito/article/view/69329" target="_blank">O uso da Inteligência Artificial Explicável. [LINK]</a></li>
-                                <li><span class="ref-id">[15]</span> Austrian Ministry (2025). <a href="https://www.sozialministerium.gv.at" target="_blank">Enlightenment 4.0 – Human understanding of AI. [LINK]</a></li>
-                                <li><span class="ref-id">[17]</span> Wright, J. <a href="https://philarchive.org/rec/WRIAKC" target="_blank">A Kantian Course Correction for Machine Ethics. [LINK]</a></li>
-                            </ul>
+                        <div class="file-content">
+                            <div class="interactive-container">
+                                <div class="info-block">
+                                    <div class="block-visual">
+                                        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1000&auto=format&fit=crop" class="article-img" alt="Robotics">
+                                        <span class="img-caption">FIG 1.4: AUTOMATION</span>
+                                    </div>
+                                    <div class="block-text">
+                                        <h4>COGNITIVE DISRUPTION</h4>
+                                        <p>Unlike the Industrial Revolution which automated muscle, the AI revolution targets <strong>cognitive and non-routine tasks</strong>. The World Economic Forum warns that millions of roles could be automated. Geoffrey Hinton recently stated that AI could shift human labor to a completely new paradigm [20].</p>
+                                    </div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="block-text">
+                                        <h4>THE CENTAUR MODEL</h4>
+                                        <p>Despite fears of replacement, many researchers suggest the future is <strong>collaborative</strong>. In medicine and engineering, the best results often come from humans working <em>with</em> AI. As Floridi notes, how society manages this transition will determine whether the benefits of AI are shared equitably [1].</p>
+                                        <div class="refs"><small>REFS: [01] Floridi (2024) | [20] Hinton (2025)</small></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <article id="art-04" class="article-panel">
-                    <div class="panel-header">
-                        <h2 class="scramble-text">FUTURE OF WORKFORCE</h2>
-                        <span class="panel-meta">AUGMENTATION_PROTOCOL</span>
-                    </div>
-                    <div class="tech-image-placeholder">
-                        <div class="tech-overlay"></div>
-                        <span class="placeholder-text">[ MODEL: ROBOTICS_ECONOMY ]</span>
-                    </div>
-                    <div class="panel-content">
-                        <p><strong>Cognitive Disruption:</strong> Unlike the Industrial Revolution which automated muscle, the AI revolution targets <strong>cognitive and non-routine tasks</strong>. The World Economic Forum warns that millions of roles could be automated. Geoffrey Hinton recently stated that AI could shift human labor to a completely new paradigm, potentially rendering many current jobs obsolete [20].</p>
-                        
-                        <div class="tech-image-placeholder inline-visual">
-                            <div class="tech-overlay"></div>
-                            <span class="placeholder-text">[ DATA: JOB_MIGRATION_CHART ]</span>
+                    <article class="file-item">
+                        <div class="file-header" id="header-05">
+                            <span class="file-id">DOC_05</span>
+                            <h3 class="file-title">SYNTHETIC CREATIVITY</h3><span class="file-category">AI_CREATIVITY</span>
+                            <span class="file-toggle">+</span>
                         </div>
-
-                        <p><strong>The Centaur Model:</strong> Despite fears of replacement, many researchers suggest the future is <strong>collaborative</strong>. In medicine and engineering, the best results often come from humans working <em>with</em> AI. As Floridi notes, how society manages this transition will determine whether the benefits of AI are shared equitably [1].</p>
-
-                        <div class="references-container">
-                            <button class="ref-toggle">
-                                <span class="ref-icon">[ + ]</span> ACCESS_SOURCE_DATA
-                            </button>
-                            <ul class="ref-list">
-                                <li><span class="ref-id">[01]</span> Floridi, L. (2024). <em>The Ethics of Artificial Intelligence.</em> Yale Digital Ethics Center.</li>
-                                <li><span class="ref-id">[20]</span> Hinton, G. (2025). <em>É Improvável Que a IA Queira Obedecer.</em> Forbes Brasil.</li>
-                            </ul>
+                        <div class="file-content">
+                            <div class="interactive-container">
+                                <div class="info-block">
+                                    <div class="block-visual">
+                                        <img src="https://images.unsplash.com/photo-1548092372-0d1bd40894a3?q=80&w=1000&auto=format&fit=crop" class="article-img" alt="Generative">
+                                        <span class="img-caption">FIG 1.5: GENERATIVE_MODEL</span>
+                                    </div>
+                                    <div class="block-text">
+                                        <h4>CREATIVITY REIMAGINED</h4>
+                                        <p>For centuries, creativity was considered the exclusive domain of the human soul. However, generative models like <strong>ChatGPT, Midjourney, and Sora</strong> have shattered this perception. By recombining vast cultural references, algorithms can now produce art, code, and literature that feels new and relevant.</p>
+                                    </div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="block-text">
+                                        <h4>AUTHOR VS. CURATOR</h4>
+                                        <p>Jason Branford argues that we shouldn't see this as simple copying, but as an intelligent reorganization of meaning [3]. The role of the human artist is shifting from "Creator" to <strong>"Curator" or "Director"</strong> of synthetic systems.</p>
+                                        <p><strong>The Legal Battlefield:</strong> This shift brings complex legal wars. Timnit Gebru argues that we need new regulatory frameworks to protect human creators [22].</p>
+                                        <div class="refs"><small>REFS: [03] Branford (2024) | [22] Gebru (2024)</small></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <article id="art-05" class="article-panel">
-                    <div class="panel-header">
-                        <h2 class="scramble-text">SYNTHETIC CREATIVITY</h2>
-                        <span class="panel-meta">GENERATIVE_ARTS</span>
-                    </div>
-                    <div class="tech-image-placeholder">
-                        <div class="tech-overlay"></div>
-                        <span class="placeholder-text">[ ART: MIDJOURNEY_LATENT_SPACE ]</span>
-                    </div>
-                    <div class="panel-content">
-                        <p><strong>Creativity Beyond the Human:</strong> For centuries, creativity was considered the exclusive domain of the human soul. However, generative models like <strong>ChatGPT, Midjourney, and Sora</strong> have shattered this perception. By recombining vast cultural references, algorithms can now produce art, code, and literature that feels new and relevant.</p>
-                        <p><strong>Creation vs. Curation:</strong> Jason Branford argues that we shouldn't see this as simple copying, but as an intelligent reorganization of meaning [3]. The role of the human artist is shifting from "Creator" to <strong>"Curator" or "Director"</strong> of synthetic systems.</p>
-                        
-                        <div class="tech-image-placeholder inline-visual">
-                            <div class="tech-overlay"></div>
-                            <span class="placeholder-text">[ COPYRIGHT: LEGAL_STATUS_NULL ]</span>
+                    <article class="file-item">
+                        <div class="file-header" id="header-06">
+                            <span class="file-id">DOC_06</span>
+                            <h3 class="file-title">GEOPOLITICS & POWER</h3><span class="file-category">POWER / RISK</span>
+                            <span class="file-toggle">+</span>
                         </div>
-
-                        <p><strong>The Legal Battlefield:</strong> This shift brings complex legal wars. Timnit Gebru argues that we need new regulatory frameworks to protect human creators from having their work scraped without consent [22]. The definition of "author" is being rewritten in real-time, echoing concerns about large language models being mere "Stochastic Parrots" [23].</p>
-
-                        <div class="references-container">
-                            <button class="ref-toggle">
-                                <span class="ref-icon">[ + ]</span> ACCESS_SOURCE_DATA
-                            </button>
-                            <ul class="ref-list">
-                                <li><span class="ref-id">[03]</span> Branford, J., et al. (2024). <em>The Philosophy and Ethics of AI.</em> Digital Society.</li>
-                                <li><span class="ref-id">[22]</span> Gebru, T. (2024). <a href="https://notaalta.espm.br" target="_blank">IA causa medo de futuro distópico? [LINK]</a></li>
-                                <li><span class="ref-id">[23]</span> Gebru, T., Bender, E. M., et al. (2021). <em>On the Dangers of Stochastic Parrots.</em> ACM Conference.</li>
-                            </ul>
+                        <div class="file-content">
+                            <div class="interactive-container">
+                                <div class="info-block">
+                                    <div class="block-visual">
+                                        <img src="https://images.unsplash.com/photo-1526304640152-d4619684e484?q=80&w=1000&auto=format&fit=crop" class="article-img" alt="Geopolitics">
+                                        <span class="img-caption">FIG 1.6: GLOBAL_RISK</span>
+                                    </div>
+                                    <div class="block-text">
+                                        <h4>THE NEW ARMS RACE</h4>
+                                        <p>Artificial Intelligence is the defining strategic resource of the 21st century. A triangular power dynamic has emerged: the <strong>US</strong> drives private innovation, <strong>China</strong> pursues a centralized state plan, and the <strong>EU</strong> acts as the global regulator [2].</p>
+                                    </div>
+                                </div>
+                                <div class="info-block">
+                                    <div class="block-text">
+                                        <h4>AUTOMATED CONFLICT</h4>
+                                        <p>The military application of AI poses existential risks. Systems that can select and engage targets without human intervention could lead to "flash wars". <strong>Geoffrey Hinton</strong> has warned that the uncontrolled evolution of military AI could lead to scenarios of automated conflict [21].</p>
+                                        <div class="refs"><small>REFS: [02] Floridi (2018) | [21] Hinton (2024)</small></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </article>
+                    </article>
 
-                <article id="art-06" class="article-panel">
-                    <div class="panel-header">
-                        <h2 class="scramble-text">GLOBAL POWER DYNAMICS</h2>
-                        <span class="panel-meta">GEOPOLITICAL_RISK</span>
-                    </div>
-                    <div class="tech-image-placeholder">
-                        <div class="tech-overlay"></div>
-                        <span class="placeholder-text">[ MAP: SILICON_CHIP_SUPPLY ]</span>
-                    </div>
-                    <div class="panel-content">
-                        <p><strong>The New Arms Race:</strong> Artificial Intelligence is the defining strategic resource of the 21st century. A triangular power dynamic has emerged: the <strong>US</strong> drives private innovation, <strong>China</strong> pursues a centralized state plan for dominance by 2030, and the <strong>EU</strong> acts as the global regulator with the AI Act [2].</p>
-                        
-                        <div class="tech-image-placeholder inline-visual">
-                            <div class="tech-overlay"></div>
-                            <span class="placeholder-text">[ TARGET: AUTONOMOUS_DRONE ]</span>
-                        </div>
+                </div>
+            </section>
 
-                        <p><strong>Lethal Autonomous Weapons:</strong> The military application of AI poses existential risks. Systems that can select and engage targets without human intervention could lead to "flash wars". <strong>Geoffrey Hinton</strong> has warned that the uncontrolled evolution of military AI could lead to scenarios of automated conflict, necessitating urgent international treaties [21].</p>
-
-                        <div class="references-container">
-                            <button class="ref-toggle">
-                                <span class="ref-icon">[ + ]</span> ACCESS_SOURCE_DATA
-                            </button>
-                            <ul class="ref-list">
-                                <li><span class="ref-id">[02]</span> Floridi, L. et al. (2018). <a href="https://hdsr.mitpress.mit.edu/pub/l0jsh9d1" target="_blank">A Unified Framework of Five Principles for AI in Society. [LINK]</a></li>
-                                <li><span class="ref-id">[21]</span> Hinton, G. (2024). <em>Interview on AI risks.</em> CBS News.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </article>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="reports" class="section-white reports-section">
-        <div class="reports-header">
-            <h1>GLOBAL_MONITOR</h1>
-            <p class="subtitle">DATA_POINTS // COORDINATES // STATUS</p>
-        </div>
-
-        <div class="reports-grid">
-            
-            <div class="report-card tilt-effect">
-                <div class="card-status active"></div>
+            <section id="reports" class="section-marquee">
+                <div class="marquee-header">
+                    <h2>GLOBAL_MONITOR</h2>
+                    <p>CLICK IMAGE FOR FULLSCREEN >></p>
+                </div>
                 
-                <div class="report-visual slider-container" 
-                    data-path="./fotos/Reports/ARS ELECTRONICS/" 
-                    data-images='["1.webp", "2.jpg", "3.webp", "4.jpg", "5.webp", "6.webp", "7.webp"]'>
+                <div class="marquee-wrapper">
+                    <div class="marquee-track">
+                        <div class="h-card" data-images='["1.webp", "2.jpg", "3.webp","4.jpg", "5.webp", "6.webp", "7.webp"]' data-path="./fotos/Reports/ARS ELECTRONICS/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/ARS ELECTRONICS/1.webp" class="slide-img" alt="Ars Electronica">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                                <div class="zoom-icon">⤢</div>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">LINZ :: AUT</span>
+                                <h3>ARS ELECTRONICA</h3>
+                                <p>Immersive robotics and bio-art laboratories.</p>
+                                <div class="btn-group">
+                                    <a href="https://ars.electronica.art/" target="_blank" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="https://www.google.com/maps/search/Ars+Electronica" target="_blank" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-card" data-images='["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"]' data-path="./fotos/Reports/TECHNIKMUSEUM/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/TECHNIKMUSEUM/1.jpg" class="slide-img" alt="Technikmuseum">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                                <div class="zoom-icon">⤢</div>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">BERLIN :: DE</span>
+                                <h3>TECHNIKMUSEUM</h3>
+                                <p>"MISSION AI". History of automated mobility.</p>
+                                <div class="btn-group">
+                                    <a href="https://technikmuseum.berlin/" target="_blank" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="https://www.google.com/maps/search/Deutsches+Technikmuseum" target="_blank" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-card" data-images='["1.jpg", "2.jpeg", "3.jpeg", "4.jpg", "5.jpeg"]' data-path="./fotos/Reports/TECHNISCHES WIEN/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/TECHNISCHES WIEN/1.jpg" class="slide-img" alt="Vienna Tech">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                                <div class="zoom-icon">⤢</div>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">VIENNA :: AUT</span>
+                                <h3>TECHNISCHES WIEN</h3>
+                                <p>Smart World analysis & Healthcare.</p>
+                                <div class="btn-group">
+                                    <a href="https://www.technischesmuseum.at/" target="_blank" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="https://www.google.com/maps/search/Technisches+Museum+Wien" target="_blank" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-card" data-images='["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg"]' data-path="./fotos/Reports/DEUTSCHES MUSEUM/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/DEUTSCHES MUSEUM/1.jpg" class="slide-img" alt="Deutsches Museum">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                                <div class="zoom-icon">⤢</div>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">MUNICH :: DE</span>
+                                <h3>DEUTSCHES MUSEUM</h3>
+                                <p>Historical archive. Neural networks history.</p>
+                                <div class="btn-group">
+                                    <a href="https://www.deutsches-museum.de/" target="_blank" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="https://www.google.com/maps/search/Deutsches+Museum" target="_blank" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-card" data-images='["1.jpg", "2.jpg", "3.jpg", "4.webp", "5.webp", "6.jpg"]' data-path="./fotos/Reports/CITÉ DES SCIENCES/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/CITÉ DES SCIENCES/1.jpg" class="slide-img" alt="Cité">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                                <div class="zoom-icon">⤢</div>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">PARIS :: FR</span>
+                                <h3>CITÉ DES SCIENCES</h3>
+                                <p>Computer Vision labs & Interactive workshops.</p>
+                                <div class="btn-group">
+                                    <a href="https://www.cite-sciences.fr/" target="_blank" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="https://www.google.com/maps/search/Cité+des+sciences+et+de+l'industrie" target="_blank" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="h-card" data-images='["1.jpg", "2.jpg", "3.webp"]' data-path="./fotos/Reports/SCIENCE MUSEUM/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/SCIENCE MUSEUM/1.jpg" class="slide-img" alt="Science Museum">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                                <div class="zoom-icon">⤢</div>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">LONDON :: UK</span>
+                                <h3>SCIENCE MUSEUM</h3>
+                                <p>The Turing Legacy. Synthetic origins.</p>
+                                <div class="btn-group">
+                                    <a href="https://www.sciencemuseum.org.uk/" target="_blank" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="https://www.google.com/maps/search/Science+Museum+London" target="_blank" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h-card cloned" data-images='["1.webp", "2.jpg", "3.webp"]' data-path="./fotos/Reports/ARS ELECTRONICS/">
+                            <div class="h-visual" onclick="openLightbox(this)">
+                                <img src="./fotos/Reports/ARS ELECTRONICS/1.webp" class="slide-img">
+                                <button class="nav-arrow prev">❮</button>
+                                <button class="nav-arrow next">❯</button>
+                            </div>
+                            <div class="h-info">
+                                <span class="loc-code">LINZ :: AUT</span>
+                                <h3>ARS ELECTRONICA</h3>
+                                <p>Loop Clone.</p>
+                                <div class="btn-group">
+                                    <a href="#" class="btn-clean">ACCESS DB ↗</a>
+                                    <a href="#" class="btn-clean btn-map">LOCATE ⌖</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="critics" class="section-critics">
+                <div class="section-header">
+                    <h2>RISK_ASSESSMENT</h2>
+                    <div class="line-h"></div>
+                </div>
+                
+                <div class="critics-grid">
                     
-                    <img src="./fotos/Reports/ARS ELECTRONICS/1.webp" alt="Ars Electronica Visual" class="slider-bg">
-                    <div class="scan-grid"></div>
-                    
-                    <button class="slider-btn prev">❮</button>
-                    <button class="slider-btn next">❯</button>
+                    <div class="critic-entry">
+                        <div class="critic-img-col">
+                            <img src="fotos/Critics/Yoshua_Bengio.jpg" alt="Yoshua Bengio">
+                        </div>
+                        <div class="critic-text-col">
+                            <span class="role-tag">TURING AWARD // PIONEER</span>
+                            <h3>YOSHUA BENGIO</h3>
+                            <p class="quote">“Efforts to build AI systems designed to act in their own interest should be criminalized.”</p>
+                            
+                            <div class="critic-body">
+                                <p>Yoshua Bengio, once optimistic, drastically changed his stance in 2023. He argues that humanity is not prepared for the speed of AI evolution. His primary concern is the <strong>loss of control</strong>: once an AI surpasses human intelligence, it may develop goals that conflict with our survival [19].</p>
+                                
+                                <div class="key-proposal">
+                                    <span class="proposal-label">KEY PROPOSAL:</span>
+                                    International treaties to ban the development of autonomous agents capable of self-replication.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="critic-entry">
+                        <div class="critic-img-col">
+                            <img src="fotos/Critics/Geoffrey.jpg" alt="Geoffrey Hinton">
+                        </div>
+                        <div class="critic-text-col">
+                            <span class="role-tag">GODFATHER OF AI</span>
+                            <h3>GEOFFREY HINTON</h3>
+                            <p class="quote">“It is quite conceivable that humanity is just a passing phase in the evolution of intelligence.”</p>
+                            
+                            <div class="critic-body">
+                                <p>Hinton left Google to speak freely about the existential risks. He suggests that digital intelligence is structurally superior to biological intelligence due to the speed of learning. He warns that <strong>AGI (Artificial General Intelligence)</strong> could arrive within the next decade [20][21].</p>
+                                
+                                <div class="key-proposal">
+                                    <span class="proposal-label">KEY PROPOSAL:</span>
+                                    Immediate global pause on giant experiments and regulation of military AI.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="critic-entry">
+                        <div class="critic-img-col">
+                            <img src="fotos/Critics/Timnit.jpg" alt="Timnit Gebru">
+                        </div>
+                        <div class="critic-text-col">
+                            <span class="role-tag">ETHICS SPECIALIST</span>
+                            <h3>TIMNIT GEBRU</h3>
+                            <p class="quote">“The danger is not that AI will destroy us, but that it will be used to control us.”</p>
+                            
+                            <div class="critic-body">
+                                <p>Unlike Hinton and Bengio, Gebru focuses on <strong>immediate harms</strong>. Her seminal paper "Stochastic Parrots" argues that Large Language Models mimic human speech without understanding, amplifying racism, sexism, and centralization of power [22][23].</p>
+                                
+                                <div class="key-proposal">
+                                    <span class="proposal-label">KEY PROPOSAL:</span>
+                                    Focus on labor rights, stopping data exploitation, and preventing algorithmic bias.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="refs-section" class="section-refs">
+                <div class="section-header">
+                    <h2>SYSTEM_REFERENCES</h2>
+                    <div class="line-h"></div>
                 </div>
 
-                <div class="report-body">
-                    <div class="report-header-row">
-                        <h3>ARS ELECTRONICA</h3>
-                        <span class="loc-badge">AUT :: LINZ</span>
+                <div class="refs-layout">
+                    <div class="ref-col">
+                        <h4>SCIENTIFIC & ETHICS</h4>
+                        <ul>
+                            <li>[1] Floridi, L. (2024). <em>The Ethics of Artificial Intelligence</em>. Yale University.</li>
+                            <li>[2] Floridi, L. et al. (2018). <em>A Unified Framework of Five Principles for AI in Society</em>.</li>
+                            <li>[3] Branford, J., et al. (2024). <em>The Philosophy and Ethics of AI</em>. Digital Society.</li>
+                            <li>[4] Müller, V. C. (2020). <em>Ethics of AI and Robotics</em>. Stanford Encyclopedia.</li>
+                            <li>[6] Ponti, M. A. (2017). <em>Como funciona o Deep Learning</em>. USP.</li>
+                            <li>[7] Krizhevsky, A., et al. (2012). <em>ImageNet Classification</em>. NIPS.</li>
+                        </ul>
+                        
+                        <h4>ALGORITHMIC BIAS</h4>
+                        <ul>
+                            <li>[8] Angwin, J. (2016). <em>Machine Bias</em>. ProPublica.</li>
+                            <li>[9] Dastin, J. (2018). <em>Amazon scraps secret AI recruiting tool</em>. Reuters.</li>
+                            <li>[11] Discriminação Algorítmica no Brasil (2024). Portal IDP.</li>
+                            <li>[13] UFSM (2024). <em>O Uso da Inteligência Artificial Explicável</em>.</li>
+                        </ul>
                     </div>
-                    
-                    <p>Immersive robotics and bio-art laboratories. The nexus of art, technology, and society.</p>
-                    
-                    <div class="report-actions">
-                        <a href="https://ars.electronica.art/news/en/" target="_blank" class="btn-action primary">
-                            <i class="fas fa-database"></i> ACCESS
-                        </a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Ars+Electronica+Center+Linz" target="_blank" class="btn-action secondary">
-                            <i class="fas fa-map-marker-alt"></i> LOCATE
-                        </a>
-                    </div>
-                </div>
-            </div>
 
-            <div class="report-card tilt-effect">
-                <div class="card-status warning"></div>
-                <div class="report-visual">
-                    <div class="scan-grid"></div>
-                    </div>
-                <div class="report-body">
-                    <div class="report-header-row">
-                        <h3>TECHNIKMUSEUM</h3>
-                        <span class="loc-badge">DE :: BERLIN</span>
-                    </div>
-                    <p>"MISSION AI". Industrial applications and the history of automated mobility in Berlin.</p>
-                    <div class="report-actions">
-                        <a href="https://technikmuseum.berlin/" target="_blank" class="btn-action primary">
-                            <i class="fas fa-database"></i> ACCESS
-                        </a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Deutsches+Technikmuseum+Berlin" target="_blank" class="btn-action secondary">
-                            <i class="fas fa-map-marker-alt"></i> LOCATE
-                        </a>
-                    </div>
-                </div>
-            </div>
+                    <div class="ref-col">
+                        <h4>INTERVIEWS & MEDIA</h4>
+                        <ul>
+                            <li>[19] Bengio, Y. (2024). <em>A humanidade pode sobreviver à IA?</em> Jacobin.</li>
+                            <li>[20] Hinton, G. (2025). <em>É Improvável Que a IA Queira Obedecer</em>. Forbes.</li>
+                            <li>[22] Gebru, T. (2024). <em>IA causa medo de futuro distópico</em>. ESPM.</li>
+                            <li>[23] Gebru, T. (2021). <em>On the Dangers of Stochastic Parrots</em>.</li>
+                        </ul>
 
-            <div class="report-card tilt-effect">
-                <div class="card-status active"></div>
-                <div class="report-visual">
-                    <div class="scan-grid"></div>
-                    </div>
-                <div class="report-body">
-                    <div class="report-header-row">
-                        <h3>TECHNISCHES WIEN</h3>
-                        <span class="loc-badge">AUT :: VIENNA</span>
-                    </div>
-                    <p>Smart World analysis. Critical view on AI in healthcare and urban planning.</p>
-                    <div class="report-actions">
-                        <a href="https://www.technischesmuseum.at/en" target="_blank" class="btn-action primary">
-                            <i class="fas fa-database"></i> ACCESS
-                        </a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Technisches+Museum+Wien" target="_blank" class="btn-action secondary">
-                            <i class="fas fa-map-marker-alt"></i> LOCATE
-                        </a>
+                        <h4>HISTORY & RESOURCES</h4>
+                        <ul>
+                            <li>[24] Turing, A. M. (1950). <em>Computing Machinery and Intelligence</em>.</li>
+                            <li>[25] McCarthy, J. (1956). <em>Dartmouth Summer Research Project</em>.</li>
+                            <li>[26] Ars Electronica Center [ars.electronica.art]</li>
+                            <li>[27] Deutsches Technikmuseum Berlin [technikmuseum.berlin]</li>
+                            <li>[29] Data Science Academy. <em>Deep Learning Book</em>.</li>
+                        </ul>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="report-card tilt-effect">
-                <div class="card-status offline"></div>
-                <div class="report-visual">
-                    <div class="scan-grid"></div>
-                    </div>
-                <div class="report-body">
-                    <div class="report-header-row">
-                        <h3>DEUTSCHES MUSEUM</h3>
-                        <span class="loc-badge">DE :: MUNICH</span>
-                    </div>
-                    <p>Historical archive. From electromechanical computing to modern neural networks.</p>
-                    <div class="report-actions">
-                        <a href="https://www.deutsches-museum.de/en/" target="_blank" class="btn-action primary">
-                            <i class="fas fa-database"></i> ACCESS
-                        </a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Deutsches+Museum+Munich" target="_blank" class="btn-action secondary">
-                            <i class="fas fa-map-marker-alt"></i> LOCATE
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <footer class="clean-footer">
+                <div class="f-left">HUMAN+ ARCHIVE</div>
+                <div class="f-right">© 2025</div>
+            </footer>
 
-            <div class="report-card tilt-effect">
-                <div class="card-status active"></div>
-                <div class="report-visual">
-                    <div class="scan-grid"></div>
-                    </div>
-                <div class="report-body">
-                    <div class="report-header-row">
-                        <h3>CITÉ DES SCIENCES</h3>
-                        <span class="loc-badge">FR :: PARIS</span>
-                    </div>
-                    <p>Computer Vision labs. Interactive workshops on how machines "see" the world.</p>
-                    <div class="report-actions">
-                        <a href="https://www.cite-sciences.fr/fr/accueil" target="_blank" class="btn-action primary">
-                            <i class="fas fa-database"></i> ACCESS
-                        </a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Cité+des+Sciences+et+de+l'Industrie+Paris" target="_blank" class="btn-action secondary">
-                            <i class="fas fa-map-marker-alt"></i> LOCATE
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="report-card tilt-effect">
-                <div class="card-status active"></div>
-                <div class="report-visual">
-                    <div class="scan-grid"></div>
-                    </div>
-                <div class="report-body">
-                    <div class="report-header-row">
-                        <h3>SCIENCE MUSEUM</h3>
-                        <span class="loc-badge">UK :: LONDON</span>
-                    </div>
-                    <p>The Turing Legacy. The origin of synthetic intelligence and post-war computation.</p>
-                    <div class="report-actions">
-                        <a href="https://www.sciencemuseum.org.uk/home" target="_blank" class="btn-action primary">
-                            <i class="fas fa-database"></i> ACCESS
-                        </a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Science+Museum+London" target="_blank" class="btn-action secondary">
-                            <i class="fas fa-map-marker-alt"></i> LOCATE
-                        </a>
-                    </div>
-                </div>
-            </div>
         </div>
-    </section>
-
-    <section id="critics" class="section-white">
-        <h1>CRITICS</h1>
-        <p>Conteúdo da secção CRITICS aqui...</p>
-    </section>
-
-    <section id="conclusion" class="section-white">
-        <h1>CONCLUSION</h1>
-        <p>Conteúdo da secção CONCLUSION aqui...</p>
-    </section>
+    </main>
 
     <script src="script.js"></script>
-    <link rel="stylesheet" href="build/static/css/main.0f82d74d.css">
-    <script src="build/static/js/main.7e9e2682.js" defer></script>
-
 </body>
 </html>

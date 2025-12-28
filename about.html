@@ -3,334 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Human+ | About</title>
+    <title>Human+ | About Protocol</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;500;700&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Space+Grotesk:wght@300;400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="build/static/css/main.0f82d74d.css">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#426dfa',
-                        dark: '#050505'
-                    },
-                    fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        mono: ['Roboto Mono', 'monospace'],
-                        montserrat: ['Montserrat', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="styles.css">
 
     <style>
-        :root {
-            --primary-color: #426dfa;
-        }
-
-        @keyframes glow-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* --- Global Styles --- */
-        body {
-            background-color: #080808;
-            color: white;
-            font-family: "Orbitron", sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* --- React Container Overrides --- */
-        .react-box-container #react-background {
-            position: absolute !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            z-index: 0;
-            background: transparent !important;
-        }
-
-        .react-box-container #react-background canvas {
-            width: 100% !important;
-            height: 100% !important;
-            position: absolute !important;
-            top: 0;
-            left: 0;
-            outline: none;
-        }
-
-        /* --- Logo Styles --- */
-        .logo {
-            font-weight: bold;
-            font-size: clamp(1.5rem, 4vw, 2.25rem);
-            color: white;
-            letter-spacing: clamp(1px, 0.5vw, 3px);
-            position: relative;
-            z-index: 2;
-            transition: color 0.4s ease;
-        }
-
-        .logo a {
-            text-decoration: none;
-            color: inherit;
-            transition: color 0.4s ease;
-        }
-
-        .logo:hover a {
-            background: linear-gradient(90deg, #ffffff, #426dfa, #ffffff, #426dfa);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow-shift 3s ease-in-out infinite;
-        }
-
-        /* --- Navbar Styles --- */
-        .nav-links,
-        .nav-right {
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
-            transition: all 0.5s ease;
-        }
-
-        .navbar:hover .nav-links,
-        .navbar:hover .nav-right,
-        .navbar.pinned .nav-links,
-        .navbar.pinned .nav-right,
-        .navbar.locked .nav-links,
-        .navbar.locked .nav-right {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-            pointer-events: auto !important;
-        }
-
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: clamp(1rem, 3vw, 2.5rem);
-            position: absolute;
-            top: 40%;
-            left: 40%;
-            transform: translateY(-50%);
-            transition: all 0.5s ease;
-        }
-
-        .nav-links li {
-            position: relative;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: white;
-            font-weight: 700;
-            font-size: clamp(0.75rem, 1.2vw, 0.875rem);
-            letter-spacing: clamp(0.5px, 0.3vw, 1px);
-            padding: 8px 0;
-            position: relative;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .nav-links a::before {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #83bcfd, #426dfa);
-            transition: width 0.4s ease;
-            box-shadow: 0 0 10px rgba(131, 188, 253, 0.8);
-        }
-
-        .nav-links a:hover {
-            color: grey;
-            text-shadow: 0 0 10px rgba(131, 188, 253, 0.8);
-        }
-
-        .nav-links a:hover::before {
-            width: 100%;
-        }
-
-        .nav-right {
-            display: flex;
+        /* Estilos Específicos para About */
+        .about-section {
+            min-height: 100vh;
+            padding: 120px var(--spacing) 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
             align-items: center;
-            position: absolute;
-            top: 30%;
-            right: clamp(1rem, 5vw, 2.5rem);
-            transform: translateY(-50%);
-            gap: clamp(9rem, 4vw, 3rem);
         }
 
-        .icon {
-            width: clamp(16px, 3vw, 22px);
-            height: clamp(16px, 3vw, 22px);
-            object-fit: contain;
-            transition: all 0.3s ease;
+        /* Coluna Visual (Canvas) */
+        .visual-container {
+            width: 100%;
+            height: 70vh;
+            border: 1px solid var(--line-color);
+            position: relative;
+            overflow: hidden;
+            background: #fff;
         }
 
-        /* --- Pin Button --- */
-        .pin {
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            background: transparent;
+        .visual-label {
+            position: absolute; bottom: 20px; left: 20px;
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent);
+            z-index: 10;
+            background: #fff; padding: 2px 5px; border: 1px solid var(--accent);
         }
 
-        /* CORREÇÃO: !important para forçar o fundo azul */
-        .pin.active {
-            background-color: rgba(66, 109, 250, 0.25) !important;
-            border: 1px solid var(--primary-color) !important;
-            box-shadow: 0 0 15px rgba(66, 109, 250, 0.3);
+        /* Coluna Texto */
+        .text-container {
+            display: flex; flex-direction: column; justify-content: center;
         }
 
-        .pin.active img {
-            filter: drop-shadow(0 0 5px var(--primary-color));
+        .mission-tag {
+            font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);
+            margin-bottom: 20px; display: block; border-left: 2px solid var(--accent); padding-left: 15px;
         }
 
-        /* --- Mobile --- */
-        .mobile-menu,
-        .mobile-menu-icon {
-            display: none;
+        .glitch-title {
+            font-family: var(--font-orbitron); font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 0.9; color: var(--text-main); margin-bottom: 30px;
         }
+        .glitch-title span { color: var(--accent); }
 
-        /* --- About Page Specifics --- */
-        .stat-box {
-            border: 1px solid #333;
-            transition: 0.3s;
-        }
-
-        .stat-box:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
+        .type-content {
+            font-family: var(--font-grotesk); font-size: 1.1rem; color: #444;
+            line-height: 1.6; margin-bottom: 40px; min-height: 150px;
         }
 
         .typing-cursor::after {
-            content: '|';
-            color: var(--primary-color);
-            animation: blink 1s step-end infinite;
-            margin-left: 2px;
+            content: '█'; color: var(--accent); animation: blink 1s step-end infinite; margin-left: 2px; font-size: 0.8em;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stat-card {
+            border: 1px solid var(--line-color); padding: 20px; text-align: center;
+            transition: all 0.3s; background: #fff;
+        }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .stat-num { font-family: var(--font-orbitron); font-size: 2rem; color: var(--text-main); display: block; }
+        .stat-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--accent); letter-spacing: 1px; }
+
+        @media (max-width: 900px) {
+            .about-section { grid-template-columns: 1fr; }
+            .visual-container { height: 40vh; order: -1; }
         }
     </style>
 </head>
-
 <body>
-    <nav class="navbar fixed w-full h-20 flex items-center justify-between px-4 md:px-10 z-50 text-white">
 
-        <div class="logo">
-            <a href="index.html">human+</a>
-        </div>
-
-        <ul class="nav-links">
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="about.html">ABOUT</a></li>
-            <li><a href="contact.html">CONTACTS</a></li>
-        </ul>
-
-        <div class="nav-right">
-            <div class="pin">
-                <img src="icons/pin.png" alt="Pin" class="icon">
-            </div>
-        </div>
-
-        <div class="mobile-menu-icon">
-            <span></span><span></span><span></span>
-        </div>
-
-        <div class="mobile-menu">
-            <ul>
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="about.html">ABOUT</a></li>
-                <li><a href="contact.html">CONTACTS</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div id="mobileNav" class="fixed inset-0 bg-black/95 z-40 flex flex-col items-center justify-center transform translate-x-full transition-transform duration-300 md:hidden">
-        <a href="index.html" class="text-2xl py-4">HOME</a>
-        <a href="about.html" class="text-2xl py-4 text-primary">ABOUT</a>
-        <a href="index.html#articles" class="text-2xl py-4">ARTICLES</a>
-        <a href="contact.html" class="text-2xl py-4">CONTACTS</a>
-        <button class="mt-8 border px-4 py-2" onclick="document.getElementById('mobileNav').classList.add('translate-x-full')">
-            CLOSE
-        </button>
+    <div class="grid-bg">
+        <div class="line-v" style="left: 20%"></div>
+        <div class="line-v" style="left: 40%"></div>
+        <div class="line-v" style="left: 60%"></div>
+        <div class="line-v" style="left: 80%"></div>
     </div>
 
-    <section class="min-h-screen pt-20 flex items-center justify-center px-4 md:px-10">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl w-full items-center">
-            
-            <div class="h-[50vh] lg:h-[70vh] w-full rounded-lg relative overflow-hidden border border-gray-800 group react-box-container bg-black">
-                <div id="react-background"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none z-10"></div>
-                <div class="absolute bottom-6 left-6 font-mono text-xl md:text-xl font-bold text-primary z-20">INTERACTIVE CORE</div>
-            </div>
-
-            <div class="flex flex-col justify-start mt-[-35px]">
-                <div class="border-l-2 border-blue-600 pl-8 relative mb-8">
-                    <span class="absolute -top-6 left-0 text-blue-600 font-mono text-sm">ETHIC & AI</span>
-                    <h1 class="text-5xl md:text-7xl font-black leading-none mb-4 glitch-title">
-                        THE<br><span class="text-primary">MISSION</span>
-                    </h1>
-                    <h2 id="type-title" class="font-mono text-xl text-gray-400 min-h-[1.5em]"></h2>
-                </div>
-
-                <div class="space-y-6 font-montserrat text-gray-300 text-lg leading-relaxed mb-10">
-                    <p id="type-p1" class="min-h-[1.5em]"></p>
-                    <p id="type-p2" class="min-h-[1.5em]"></p>
-                </div>
-
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="stat-box p-4 bg-gray-900/5 border border-white/5 text-center rounded-xl">
-                        <div class="text-3xl font-bold text-white mb-1">01</div>
-                        <div class="text-xs font-mono text-primary">ETHICS</div>
-                    </div>
-                    <div class="stat-box p-4 bg-gray-900/5 border border-white/5 text-center rounded-xl">
-                        <div class="text-3xl font-bold text-white mb-1">02</div>
-                        <div class="text-xs font-mono text-primary">AI</div>
-                    </div>
-                    <div class="stat-box p-4 bg-gray-900/5 border border-white/5 text-center rounded-xl">
-                        <div class="text-3xl font-bold text-white mb-1">03</div>
-                        <div class="text-xs font-mono text-primary">EVEN MORE...</div>
-                    </div>
-                </div>
-
-
-            </div>
+    <nav class="doc-nav">
+        <div class="nav-left">
+            <span class="brand"><a href="index.html" style="text-decoration:none; color:inherit;">HUMAN<span class="plus">+</span></a></span>
+            <span class="meta-tag">ABOUT_PROTOCOL // V.2.0</span>
         </div>
-    </section>
+        <ul class="nav-links">
+            <li><a href="index.html">01. DATA</a></li>
+            <li><a href="index.html#articles">02. REPORTS</a></li>
+            <li><a href="index.html#critics">03. ANALYSIS</a></li>
+            <li><a href="about.html" style="color:var(--accent)">04. ABOUT</a></li>
+            <li><a href="contact.html">05. CONTACT</a></li>
+        </ul>
+    </nav>
 
-    <script src="script.js"></script>
-    <script src="build/static/js/main.7e9e2682.js" defer></script>
+    <main>
+        <section class="about-section">
+            
+            <div class="visual-container">
+                <canvas id="neural-canvas"></canvas>
+                <div class="visual-label">SYS_STATUS: NEURAL_LINK_ACTIVE</div>
+            </div>
+
+            <div class="text-container">
+                <span class="mission-tag">FILE: MISSION_STATEMENT</span>
+                
+                <h1 class="glitch-title">
+                    THE<br><span>MISSION</span>
+                </h1>
+
+                <div class="type-content">
+                    <p id="type-p1"></p>
+                    <br>
+                    <p id="type-p2"></p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-num">01</span>
+                        <span class="stat-label">ETHICS</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num">02</span>
+                        <span class="stat-label">AI_CORE</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num">03</span>
+                        <span class="stat-label">FUTURE</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <footer class="clean-footer">
+            <div class="f-left">HUMAN+ ARCHIVE</div>
+            <div class="f-right">© 2025</div>
+        </footer>
+    </main>
 
     <script>
+        // --- 1. TYPEWRITER EFFECT ---
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // --- Typewriter Logic ---
-            const textTitle = "Where AI Meets Ethics";
-            const textP1 = 'Technology is not neutral. At "Human+", we investigate the critical intersection where human biology meets synthetic intelligence.';
-            const textP2 = "Our goal is not only to observe the future, but to shape it through rigorous ethical discourse and bold design. We are the architects of the new digital consciousness.";
+            const text1 = 'Technology is not neutral. At "Human+", we investigate the critical intersection where human biology meets synthetic intelligence.';
+            const text2 = "Our goal is not only to observe the future, but to shape it through rigorous ethical discourse. We are the architects of the new digital consciousness.";
 
             function typeWriter(elementId, text, speed, callback) {
                 const element = document.getElementById(elementId);
                 let i = 0;
-
                 element.classList.add('typing-cursor');
 
                 function type() {
@@ -347,12 +173,75 @@
             }
 
             setTimeout(() => {
-                typeWriter('type-title', textTitle, 90, () => {
-                    typeWriter('type-p1', textP1, 40, () => {
-                        typeWriter('type-p2', textP2, 40, null);
-                    });
+                typeWriter('type-p1', text1, 30, () => {
+                    typeWriter('type-p2', text2, 30, null);
                 });
             }, 500);
+
+            // --- 2. NEURAL CANVAS (Light Mode) ---
+            const canvas = document.getElementById('neural-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height, particles = [];
+
+            function resize() {
+                // Ajusta ao tamanho do container pai
+                const rect = canvas.parentElement.getBoundingClientRect();
+                width = canvas.width = rect.width;
+                height = canvas.height = rect.height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Node {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 1.5;
+                    this.vy = (Math.random() - 0.5) * 1.5;
+                    this.size = Math.random() * 3 + 1;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if(this.x < 0 || this.x > width) this.vx *= -1;
+                    if(this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = '#111'; // Pontos pretos
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            }
+
+            for(let i=0; i<40; i++) particles.push(new Node());
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                // Fundo branco ligeiro
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillRect(0,0,width,height);
+
+                particles.forEach((p, index) => {
+                    p.update();
+                    p.draw();
+                    for(let j=index; j<particles.length; j++) {
+                        const dx = particles[j].x - p.x;
+                        const dy = particles[j].y - p.y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 120) {
+                            // Linhas cinzentas/azuladas
+                            ctx.strokeStyle = `rgba(46, 84, 214, ${1 - dist/120})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
         });
     </script>
 </body>

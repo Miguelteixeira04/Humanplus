@@ -1,594 +1,302 @@
-/* =========================================
-   GLOBAL INITIALIZATION
-   ========================================= */
-document.addEventListener('DOMContentLoaded', function() {
-    initSplashScreen();
-    initUIInteractions();
-    initSearchSystem();
-    initScrollObservers();
-    initNewArticlesSystem(); 
-    initReportSliders();     
-    initAudioSystem();
-});
+document.addEventListener('DOMContentLoaded', () => {
 
-/* =========================================
-   1. SPLASH SCREEN
-   ========================================= */
-function initSplashScreen() {
-    const splashScreen = document.getElementById('splash-screen');
-    const navbar = document.querySelector('.navbar');
-    const indicator = document.querySelector('.section-indicator');
-    const scrollBtn = document.querySelector('.scroll-button'); // Opcional: esconder botão de scroll também
-    
-    // Se não existir na página, para a execução
-    if (!splashScreen) return;
-
-    // Função auxiliar para mostrar/esconder UI
-    const toggleUI = (show) => {
-        const elements = [navbar, indicator, scrollBtn];
-        elements.forEach(el => {
-            if(el) {
-                if(show) {
-                    el.classList.remove('ui-hidden');
-                } else {
-                    el.classList.add('ui-hidden');
-                }
-            }
-        });
-    };
-
-    const hasSeenSplash = sessionStorage.getItem('humanPlusIntroSeen');
-
-    if (hasSeenSplash) {
-        splashScreen.style.display = 'none';
-        toggleUI(true); 
-    } else {
-        // 1. ESCONDE A UI IMEDIATAMENTE AO INICIAR
-        toggleUI(false);
-
-        const splashText = document.getElementById('splash-text');
-        const text = 'human';
-        let charIndex = 0;
-
-        function revealText() {
-            if (charIndex < text.length) {
-                splashText.textContent += text[charIndex];
-                charIndex++;
-                setTimeout(revealText, 500);
-            }
-        }
-
-        setTimeout(revealText, 300);
-
-        setTimeout(() => {
-            splashScreen.classList.add('fade-out');
-            
-            setTimeout(() => toggleUI(true), 500); 
-            
-        }, 6000);
-
-        setTimeout(() => {
-            splashScreen.style.display = 'none';
-            sessionStorage.setItem('humanPlusIntroSeen', 'true');
-        }, 6800);
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
     }
-}
+    window.scrollTo(0, 0);
 
-/* =========================================
-   2. UI INTERACTIONS (Navbar, Menu, Scroll)
-   ========================================= */
-function initUIInteractions() {
-    // --- Scroll Suave ---
-    window.scrollToSection = function(id) {
-        const section = document.getElementById(id);
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-        }
-    };
+    const title = document.getElementById("hero-title");
+    if (title) {
+        const letters = "0101010101ABCDEFGHIJKLMNOP";
+        const originalText = title.dataset.value.replace('+', '');
+        const suffix = '<span class="plus-accent">+</span>';
+        let interval = null;
+        let iteration = 0;
 
-    // --- Pin / Lock Navbar ---
-    const pin = document.querySelector('.pin');
-    const navbar = document.querySelector('.navbar');
-
-    if (pin && navbar) {
-        pin.addEventListener('click', () => {
-            navbar.classList.toggle('locked');
-            pin.classList.toggle('active');
-        });
-    }
-
-    // --- Mobile Menu Toggle ---
-    const mobileIcon = document.querySelector(".mobile-menu-icon");
-    const mobileMenu = document.querySelector(".mobile-menu");
-
-    if (mobileIcon && mobileMenu) {
-        mobileIcon.addEventListener("click", () => {
-            mobileIcon.classList.toggle("active");
-            mobileMenu.classList.toggle("active");
-        });
-    }
-}
-
-/* =========================================
-   3. SEARCH SYSTEM (Expand & Highlight)
-   ========================================= */
-function initSearchSystem() {
-    const search = document.querySelector('.search');
-    const searchIcon = document.querySelector('.search-icon');
-    const searchInput = document.querySelector('.search-input');
-    const contentArea = document.body;    
-    
-    let originalContent = null;
-
-    if (!search || !searchInput) return;
-
-    // --- Funções Auxiliares de Highlight ---
-    function saveOriginalContent() {
-        if (!originalContent) {
-            originalContent = contentArea.cloneNode(true);
-        }
-    }
-
-    function removeHighlights() {
-        if (!originalContent) return;
-        
-        const highlighted = contentArea.querySelectorAll('.highlight');
-        highlighted.forEach(span => {
-            const parent = span.parentNode;
-            if (parent && parent.tagName === 'SPAN' && !parent.classList.contains('highlight')) {
-                const textNodes = [];
-                parent.childNodes.forEach(node => {
-                    if (node.nodeType === Node.TEXT_NODE) {
-                        textNodes.push(node.textContent);
-                    } else if (node.classList && node.classList.contains('highlight')) {
-                        textNodes.push(node.textContent);
-                    }
-                });
-                parent.replaceWith(document.createTextNode(textNodes.join('')));
-            } else {
-                span.replaceWith(document.createTextNode(span.textContent));
-            }
-        });
-        contentArea.normalize();
-    }
-
-    function highlightWord(word) {
-        if (!word.trim()) return;
-        saveOriginalContent();
-
-        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(${escapedWord})`, 'gi');
-        const textNodes = [];
-        
-        const walker = document.createTreeWalker(
-            contentArea,
-            NodeFilter.SHOW_TEXT,
-            {
-                acceptNode: function(node) {
-                    const parent = node.parentElement;
-                    if (!parent) return NodeFilter.FILTER_REJECT;
-                    
-                    const tagName = parent.tagName;
-                    if (tagName === 'SCRIPT' || tagName === 'STYLE') return NodeFilter.FILTER_REJECT;
-                    if (parent.classList.contains('highlight')) return NodeFilter.FILTER_REJECT;
-                    if (parent.closest('.search') || parent.closest('.side-menu')) return NodeFilter.FILTER_REJECT;
-                    if (!node.textContent.trim()) return NodeFilter.FILTER_REJECT;
-
-                    return NodeFilter.FILTER_ACCEPT;
-                }
-            }
-        );
-
-        let node;
-        while (node = walker.nextNode()) {
-            textNodes.push(node);
-        }
-
-        textNodes.forEach(textNode => {
-            const text = textNode.nodeValue;
-            if (regex.test(text)) {
-                const fragment = document.createDocumentFragment();
-                let lastIndex = 0;
-                regex.lastIndex = 0;
-                let match;
-
-                while ((match = regex.exec(text)) !== null) {
-                    if (match.index > lastIndex) {
-                        fragment.appendChild(document.createTextNode(text.substring(lastIndex, match.index)));
-                    }
-                    const highlight = document.createElement('span');
-                    highlight.className = 'highlight';
-                    highlight.textContent = match[0];
-                    fragment.appendChild(highlight);
-                    lastIndex = match.index + match[0].length;
-                }
-
-                if (lastIndex < text.length) {
-                    fragment.appendChild(document.createTextNode(text.substring(lastIndex)));
-                }
-                textNode.parentNode.replaceChild(fragment, textNode);
-            }
-        });
-    }
-
-    // --- Event Listeners da Pesquisa ---
-    searchInput.addEventListener("input", () => {
-        const word = searchInput.value;
-        removeHighlights();
-        if (word.trim() !== "") {
-            highlightWord(word);
-        } else {
-            originalContent = null;
-        }
-    });
-
-    if (searchIcon) {
-        searchIcon.addEventListener('click', () => {
-            search.classList.toggle('active');
-            if (search.classList.contains('active')) {
-                searchInput.focus();
-            } else {
-                searchInput.value = "";
-                removeHighlights();
-                originalContent = null;
-            }
-        });
-    }
-
-    searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            searchInput.value = "";
-            removeHighlights();
-            originalContent = null;
-            search.classList.remove('active');
-        }
-    });
-}
-
-/* =========================================
-   4. SCROLL OBSERVERS (Elevator & Colors)
-   ========================================= */
-function initScrollObservers() {
-    const navbar = document.querySelector('.navbar');
-    const indicator = document.querySelector('.section-indicator'); 
-    const navLinks = document.querySelectorAll('.indicator-link'); 
-    
-    // Ícones da navbar
-    const searchIcon = document.querySelector('.search-icon');
-    const pinIcon = document.querySelector('.pin img');
-
-    const sections = document.querySelectorAll('section');
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            // Alterado: Verifica se está a intersetar E se é a secção dominante
-            if (entry.isIntersecting) {
-                const id = entry.target.id;
-
-                // 1. ATUALIZAR A BOLINHA ATIVA
-                navLinks.forEach(link => link.classList.remove('active'));
-                
-                const activeLink = document.querySelector(`.indicator-link[href="#${id}"]`);
-                if (activeLink) {
-                    activeLink.classList.add('active');
-                }
-
-                // 2. LÓGICA DA LINHA DA NAVBAR (Só na Home)
-                if (id === 'home') {
-                    navbar.classList.add('on-home');
-                } else {
-                    navbar.classList.remove('on-home');
-                }
-
-                // 3. CORES (Dark Mode vs Light Mode)
-                // Home e Reports = Fundo Escuro (Texto/Menu Branco)
-                if (id === 'home' || id === 'reports') {
-                    
-                    if (navbar) navbar.classList.remove('dark-mode');
-                    if (indicator) indicator.classList.remove('dark-mode'); 
-                    
-                    // Ícones Brancos
-                    if (searchIcon) searchIcon.src = 'icons/search.png';
-                    if (pinIcon) pinIcon.src = 'icons/pin.png';
-
-                } else {
-                    // Articles, Critics, Conclusion = Fundo Claro (Texto/Menu Preto)                   
-                    if (navbar) navbar.classList.add('dark-mode');
-                    if (indicator) indicator.classList.add('dark-mode');
-                    
-                    // Ícones Pretos
-                    if (searchIcon) searchIcon.src = 'icons/search_black.png'; 
-                    if (pinIcon) pinIcon.src = 'icons/pin_black.png';
-                }
-            }
-        });
-    }, {
-        // CORREÇÃO AQUI:
-        // threshold 0.15 significa que basta 15% da secção aparecer para ativar.
-        // rootMargin ajuda a disparar a troca um pouco antes do centro do ecrã.
-        threshold: 0.15, 
-        rootMargin: "-20% 0px -50% 0px" 
-    });
-
-    sections.forEach(section => {
-        observer.observe(section);
-    });
-}
-
-/* =========================================
-   5. NEW ARTICLES SYSTEM (TAB & SCRAMBLE)
-   ========================================= */
-function initNewArticlesSystem() {
-    const navItems = document.querySelectorAll('.nav-item');
-    const panels = document.querySelectorAll('.article-panel');
-    const refToggles = document.querySelectorAll('.ref-toggle');
-
-    // 1. LÓGICA DAS REFERÊNCIAS (APENAS ABRE/FECHA A LISTA)
-    refToggles.forEach(toggle => {
-        toggle.addEventListener('click', function() {
-            const list = this.nextElementSibling;
-            const icon = this.querySelector('.ref-icon');
-            
-            list.classList.toggle('active');
-
-            if (list.classList.contains('active')) {
-                icon.textContent = '[ - ]';
-                this.style.background = '#000';
-                this.style.color = '#fff';
-            } else {
-                icon.textContent = '[ + ]';
-                this.style.background = 'transparent';
-                this.style.color = '#333';
-            }
-        });
-    });
-
-    // Função de Scramble Text
-    function scrambleText(element) {
-        const originalText = element.textContent;
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-        let iterations = 0;
-        
-        const interval = setInterval(() => {
-            element.innerText = originalText
-                .split('')
+        interval = setInterval(() => {
+            title.innerHTML = originalText
+                .split("")
                 .map((letter, index) => {
-                    if(index < iterations) {
-                        return originalText[index];
-                    }
-                    return chars[Math.floor(Math.random() * chars.length)];
+                    if (index < iteration) return originalText[index];
+                    return letters[Math.floor(Math.random() * 26)];
                 })
-                .join('');
-            
-            if(iterations >= originalText.length) {
+                .join("") + suffix;
+
+            if (iteration >= originalText.length) {
                 clearInterval(interval);
+                title.classList.add('resolved');
             }
-            
-            iterations += 1/2; 
-        }, 30);
+            iteration += 1 / 3;
+        }, 40);
     }
 
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            
-            stopAudio(); 
+    const zoomWrapper = document.querySelector('.scroll-zoom-wrapper');
+    const stickyHero = document.querySelector('.sticky-hero');
+    const heroContent = document.querySelector('.hero-content-center');
+    const maxZoom = 25;
 
-            navItems.forEach(nav => nav.classList.remove('active'));
-            panels.forEach(panel => panel.classList.remove('active'));
+    function updateZoom() {
+        const scrollTop = window.scrollY;
+        const wrapperHeight = zoomWrapper.offsetHeight;
+        const windowHeight = window.innerHeight;
 
-            item.classList.add('active');
-            const targetId = item.getAttribute('data-target');
-            const targetPanel = document.getElementById(targetId);
-            
-            if (targetPanel) {
-                targetPanel.classList.add('active');
-                
-                const title = targetPanel.querySelector('.scramble-text');
-                if (title) {
-                    scrambleText(title);
-                }
-            }
-        });
-    });
-}
-
-/* =========================================
-   6. REPORTS 3D TILT EFFECT (Melhorado)
-   ========================================= */
-function initReportsTilt() {
-    const cards = document.querySelectorAll('.tilt-effect');
-
-    if (window.innerWidth <= 768) return;
-
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left; 
-            const y = e.clientY - rect.top;
-            
-            const xPct = (x / rect.width) - 0.5;
-            const yPct = (y / rect.height) - 0.5;
-
-            const rotateX = yPct * -20; 
-            const rotateY = xPct * 20;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-        });
-    });
-}
-
-/* =========================================
-   7. REPORT IMAGE SLIDERS
-   ========================================= */
-function initReportSliders() {
-    const sliders = document.querySelectorAll('.slider-container');
-
-    sliders.forEach(container => {
-        // Verificar se este container tem dados de imagens
-        if (!container.dataset.images) return;
-
-        const imgElement = container.querySelector('.slider-bg');
-        const prevBtn = container.querySelector('.prev');
-        const nextBtn = container.querySelector('.next');
-        
-        // Ler configurações do HTML
-        const path = container.dataset.path;
-        const images = JSON.parse(container.dataset.images);
-        let currentIndex = 0;
-
-        function updateSlide() {
-            // Efeito visual de "glitch" ou fade rápido na troca
-            imgElement.style.opacity = '0.5';
-            
-            setTimeout(() => {
-                imgElement.src = path + images[currentIndex];
-                imgElement.onload = () => {
-                    imgElement.style.opacity = '1';
-                };
-            }, 100);
+        if (scrollTop < 5) {
+            stickyHero.style.opacity = 1;
+            stickyHero.style.visibility = 'visible';
+            heroContent.style.transform = 'scale(1)';
+            heroContent.style.opacity = '1';
+            requestAnimationFrame(updateZoom);
+            return;
         }
 
-        prevBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            currentIndex--;
-            if (currentIndex < 0) {
-                currentIndex = images.length - 1;
-            }
-            updateSlide();
-        });
+        const scrollProgress = scrollTop / (wrapperHeight - windowHeight);
 
-        nextBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            currentIndex++;
-            if (currentIndex >= images.length) {
-                currentIndex = 0;
+        if (scrollProgress >= 0 && scrollProgress <= 1) {
+            stickyHero.style.visibility = 'visible';
+            const scale = 1 + (Math.pow(scrollProgress, 3) * maxZoom);
+            let opacity = 1;
+            if (scrollProgress > 0.5) opacity = 1 - ((scrollProgress - 0.5) * 2.5);
+
+            heroContent.style.transform = `scale(${scale})`;
+            heroContent.style.opacity = Math.max(0, opacity);
+        } else {
+            stickyHero.style.visibility = 'hidden';
+        }
+        requestAnimationFrame(updateZoom);
+    }
+    updateZoom();
+
+    // --- TIMELINE FOR DOC 01 ---
+    const timelineSection = document.querySelector('.timeline-container');
+    const progressLine = document.getElementById('progress-line');
+    const nodes = document.querySelectorAll('.timeline-node');
+
+    function updateTimeline() {
+        if (!timelineSection) return;
+        
+        // Only run if the timeline is actually visible/open
+        if (timelineSection.closest('.file-item').classList.contains('active')) {
+            const rect = timelineSection.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            let percentage = (windowHeight / 2 - rect.top) / rect.height * 100;
+
+            if (percentage < 0) percentage = 0;
+            if (percentage > 100) percentage = 100;
+            progressLine.style.height = `${percentage}%`;
+
+            nodes.forEach(node => {
+                const nodeTop = node.getBoundingClientRect().top;
+                if (nodeTop < windowHeight * 0.75) node.classList.add('active');
+                else node.classList.remove('active');
+            });
+        }
+    }
+
+    // --- GENERIC SCROLL ANIMATION FOR DOC 02-06 ---
+    // Looks for .info-block elements in active articles
+    function updateInfoBlocks() {
+        const activeBlocks = document.querySelectorAll('.file-item.active .info-block');
+        const windowHeight = window.innerHeight;
+        
+        activeBlocks.forEach(block => {
+            const rect = block.getBoundingClientRect();
+            // Trigger when top of block is 85% down the viewport
+            if (rect.top < windowHeight * 0.85) {
+                block.classList.add('visible');
             }
-            updateSlide();
         });
+    }
+
+    window.addEventListener('scroll', () => {
+        updateTimeline();
+        updateInfoBlocks();
     });
-}
 
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lbCounter = document.getElementById('lb-counter');
+    const closeBtn = document.querySelector('.close-lightbox');
+    const lbPrev = document.getElementById('lb-prev');
+    const lbNext = document.getElementById('lb-next');
 
-/* =========================================
-   8. TEXT TO SPEECH (CYBER AUDIO)
-   ========================================= */
-let synth = window.speechSynthesis;
-let currentUtterance = null;
-let currentBtn = null;
+    let currentImages = [];
+    let currentPath = "";
+    let currentIndex = 0;
 
-let voices = [];
-function loadVoices() {
-    voices = synth.getVoices();
-}
-if (speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.onvoiceschanged = loadVoices;
-}
-
-function toggleArticleAudio(btn) {
-    // 1. Se já estiver a tocar ESTE artigo, pára tudo.
-    if (synth.speaking && currentBtn === btn) {
-        stopAudio();
-        return;
-    }
-
-    // 2. Se estiver a tocar OUTRO artigo, pára o anterior primeiro
-    if (synth.speaking) {
-        stopAudio();
-    }
-
-    // 3. Iniciar novo áudio
-    const article = btn.closest('.article-panel');
-    const content = getCleanText(article);
-    
-    // Configura a fala
-    const utterance = new SpeechSynthesisUtterance(content);
-    
-    // Tenta encontrar uma voz UK (United Kingdom)
-    // Tenta "Google UK English Female", ou qualquer "en-GB"
-    const ukVoice = voices.find(v => v.name.includes('Google UK English Male')) || 
-                    voices.find(v => v.lang === 'en-GB') ||
-                    voices.find(v => v.lang === 'en_GB');
-
-    if (ukVoice) {
-        utterance.voice = ukVoice;
-    }
-    
-    // Ajustes "Robóticos/Futuristas"
-    utterance.rate = 1.0;  // Velocidade normal
-    utterance.pitch = 0.9; // Ligeiramente mais grave para ser mais sério
-
-    // Eventos de estado
-    utterance.onstart = () => {
-        setButtonState(btn, true);
-        currentBtn = btn;
+    window.openLightbox = function(element) {
+        const card = element.closest('.h-card');
+        if (card && card.dataset.images) {
+            currentImages = JSON.parse(card.dataset.images);
+            currentPath = card.dataset.path;
+            const currentSrc = element.querySelector('.slide-img').getAttribute('src');
+            const filename = currentSrc.split('/').pop();
+            currentIndex = currentImages.findIndex(img => img.includes(filename));
+            if (currentIndex === -1) currentIndex = 0;
+            updateLightboxView();
+            lightbox.classList.add('active');
+        }
     };
 
-    utterance.onend = () => {
-        setButtonState(btn, false);
-        currentBtn = null;
-    };
-
-    // Tocar
-    synth.speak(utterance);
-    currentUtterance = utterance;
-}
-
-function stopAudio() {
-    synth.cancel();
-    if (currentBtn) {
-        setButtonState(currentBtn, false);
-        currentBtn = null;
+    function updateLightboxView() {
+        lightboxImg.style.opacity = 0.5;
+        setTimeout(() => {
+            lightboxImg.src = currentPath + currentImages[currentIndex];
+            lbCounter.innerText = `IMG ${String(currentIndex + 1).padStart(2, '0')}/${String(currentImages.length).padStart(2, '0')}`;
+            lightboxImg.onload = () => { lightboxImg.style.opacity = 1; };
+        }, 150);
     }
-}
 
-// Muda o visual do botão (Play vs Stop)
-function setButtonState(btn, isPlaying) {
-    const icon = btn.querySelector('.icon-state');
-    const text = btn.querySelector('.text-state');
-    
-    if (isPlaying) {
-        btn.classList.add('playing');
-        icon.textContent = '■'; // Stop Icon
-        text.textContent = 'TRANSMITTING...';
-    } else {
-        btn.classList.remove('playing');
-        icon.textContent = '▶'; // Play Icon
-        text.textContent = 'INIT_AUDIO_LOG';
-    }
-}
-
-// Função auxiliar para limpar o texto (não ler menus ou botões)
-function getCleanText(element) {
-    // Clona o elemento para não estragar o original
-    let clone = element.cloneNode(true);
-    
-    // Remove elementos que não queremos ouvir
-    const ignoreList = [
-        '.references-container', // Não ler a lista de referências
-        '.cyber-audio-btn',      // Não ler o texto do próprio botão
-        '.panel-meta',           // Opcional: não ler o subtítulo técnico
-        'button'                 // Não ler outros botões
-    ];
-
-    ignoreList.forEach(selector => {
-        const els = clone.querySelectorAll(selector);
-        els.forEach(el => el.remove());
+    lbPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex--;
+        if (currentIndex < 0) currentIndex = currentImages.length - 1;
+        updateLightboxView();
     });
 
-    return clone.innerText;
-}
+    lbNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex++;
+        if (currentIndex >= currentImages.length) currentIndex = 0;
+        updateLightboxView();
+    });
 
-// Parar o áudio se o utilizador mudar de aba no menu de artigos
-// Adiciona isto ao teu initNewArticlesSystem existente, dentro do evento click do navItem
-/*
-    navItems.forEach(item => {
-        item.addEventListener('click', () => {
-            stopAudio(); // <--- ADICIONAR ESTA LINHA NA TUA FUNÇÃO EXISTENTE
-            // ... resto do código ...
+    closeBtn.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) lightbox.classList.remove('active');
+    });
+
+    // --- IMPROVED ACCORDION LOGIC ---
+    const fileItems = document.querySelectorAll('.file-item');
+    fileItems.forEach(item => {
+        const header = item.querySelector('.file-header');
+        header.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isActive = item.classList.contains('active');
+            
+            // 1. Close all items first
+            fileItems.forEach(f => f.classList.remove('active'));
+
+            if (!isActive) {
+                // 2. Open the clicked item
+                item.classList.add('active');
+                
+                // 3. Scroll to the header of the opened item after layout shift
+                // We use setTimeout to allow the browser to register the class change and CSS transition to start
+                setTimeout(() => {
+                    const offset = 75; // Offset for sticky nav
+                    const bodyRect = document.body.getBoundingClientRect().top;
+                    const elementRect = item.getBoundingClientRect().top;
+                    const elementPosition = elementRect - bodyRect;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                    
+                    // Trigger animations immediately for initial view
+                    setTimeout(() => {
+                        updateTimeline();
+                        updateInfoBlocks();
+                    }, 300);
+                    
+                }, 550); // Slightly longer than CSS transition (0.5s) to ensure smooth expansion first
+            }
         });
     });
-*/
+
+    const museumCards = document.querySelectorAll('.h-card');
+    museumCards.forEach(card => {
+        if (!card.dataset.images) return;
+        const images = JSON.parse(card.dataset.images);
+        const path = card.dataset.path;
+        const imgElement = card.querySelector('.slide-img');
+        const prevBtn = card.querySelector('.prev');
+        const nextBtn = card.querySelector('.next');
+        let cardIndex = 0;
+
+        function updateCardImage() {
+            imgElement.style.opacity = 0;
+            setTimeout(() => {
+                imgElement.src = path + images[cardIndex];
+                imgElement.onload = () => { imgElement.style.opacity = 1; };
+            }, 150);
+        }
+
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cardIndex--;
+                if (cardIndex < 0) cardIndex = images.length - 1;
+                updateCardImage();
+            });
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                cardIndex++;
+                if (cardIndex >= images.length) cardIndex = 0;
+                updateCardImage();
+            });
+        }
+    });
+
+    const canvas = document.getElementById('tech-canvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = '#bbb';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                for (let j = index; j < particles.length; j++) {
+                    const dx = particles[j].x - p.x;
+                    const dy = particles[j].y - p.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.strokeStyle = `rgba(180, 180, 180, ${1 - dist / 150})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+});
