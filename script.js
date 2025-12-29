@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(interval);
                 title.classList.add('resolved');
             }
-            iteration += 1 / 3;
-        }, 40);
+            iteration += 1 / 8;
+        }, 60);
     }
 
     const zoomWrapper = document.querySelector('.scroll-zoom-wrapper');

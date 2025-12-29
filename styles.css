@@ -941,15 +941,101 @@ body {
 }
 
 @media (max-width: 768px) {
-    .timeline-track-bg, .timeline-track-fill { left: 20px; }
-    .node-year { width: 20px; font-size: 0; padding: 0; }
-    .node-year::after { right: -6px; top: 0; }
-    .node-content { padding-left: 30px; }
-    .node-text h4 { font-size: 1.4rem; }
-    .refs { padding-left: 0; }
-    .interactive-container { padding: 40px 20px; }
-    .block-visual { height: 250px; }
-    .block-text h4, .block-text p { padding-left: 0; border: none; }
-    .file-category { display: none; }
-    .refs-layout { grid-template-columns: 1fr; gap: 40px; }
+    .doc-nav {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        height: 60px;
+        padding: 0 15px;
+        gap: 15px;
+        overflow: hidden;
+    }
+
+    .nav-left {
+        flex-shrink: 0;
+        width: auto;
+        margin-right: 0;
+    }
+
+    .brand {
+        font-size: 1.2rem;
+    }
+
+    .meta-tag {
+        display: none;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        overflow-x: auto;
+        flex-grow: 1;
+        width: auto;
+        padding-right: 20px;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-links li {
+        flex-shrink: 0;
+    }
+
+    .nav-links a {
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .marquee-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        margin-bottom: 30px;
+    }
+
+    .marquee-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .marquee-header p {
+        font-size: 0.7rem;
+    }
+
+    .h-card {
+        width: 85vw;
+        max-width: 350px;
+    }
+
+    .h-visual {
+        height: 250px;
+    }
+
+    .critics-grid {
+        margin-top: 40px;
+        gap: 60px;
+    }
+
+    .critic-entry {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .critic-img-col img {
+        height: 300px;
+    }
+
+    .critic-text-col h3 {
+        font-size: 2.2rem;
+    }
+
+    .refs-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
 }
