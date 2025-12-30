@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human+ | Secure Comms</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Space+Grotesk:wght@300;400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Estilos Específicos para Contact */
+        .contact-section {
+            min-height: 100vh;
+            padding: 120px var(--spacing) 60px;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .contact-card {
+            display: grid; grid-template-columns: 1fr 1.5fr;
+            width: 100%; max-width: 1200px;
+            background: #fff;
+            border: 1px solid var(--text-main);
+            box-shadow: 20px 20px 0 rgba(0,0,0,0.1); /* Sombra sólida técnica */
+        }
+
+        /* Coluna Info (Preta) */
+        .info-col {
+            background: var(--text-main); color: #fff;
+            padding: 60px; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .info-col h1 { font-family: var(--font-orbitron); font-size: 2.5rem; margin-bottom: 10px; }
+        .info-subtitle { font-family: var(--font-mono); font-size: 0.8rem; color: #888; margin-bottom: 40px; }
+        
+        .info-group { margin-bottom: 30px; }
+        .info-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 5px; display: block; }
+        .info-value { font-family: var(--font-grotesk); font-size: 1rem; color: #ddd; }
+        
+        .social-links a { color: #888; text-decoration: none; margin-right: 15px; font-family: var(--font-mono); font-size: 0.8rem; transition: color 0.3s; }
+        .social-links a:hover { color: #fff; }
+
+        /* Coluna Formulário (Branca) */
+        .form-col { padding: 60px; position: relative; }
+        /* Padrão de fundo subtil */
+        .form-col::before {
+            content: ""; position: absolute; inset: 0;
+            background-image: radial-gradient(#ccc 1px, transparent 1px);
+            background-size: 20px 20px; opacity: 0.2; pointer-events: none;
+        }
+
+        .form-group { margin-bottom: 40px; position: relative; z-index: 1; }
+        .form-label {
+            display: block; font-family: var(--font-orbitron); font-size: 0.8rem; 
+            font-weight: 700; color: var(--text-main); 
+        }
+        
+        .form-input {
+            width: 100%; background: transparent;
+            border: none; border-bottom: 2px solid #ccc;
+            padding: 10px 0; font-family: var(--font-grotesk); font-size: 1rem;
+            outline: none; transition: border-color 0.3s;
+        }
+        .form-input:focus { border-bottom-color: var(--accent); }
+        .form-input::placeholder { color: #aaa; }
+
+        .btn-send {
+            background: var(--text-main); color: #fff;
+            border: none; padding: 15px 40px;
+            font-family: var(--font-orbitron); font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s;
+            float: right;
+        }
+        .btn-send:hover { background: var(--accent); transform: translateY(-2px); }
+
+        @media (max-width: 900px) {
+            .contact-card { grid-template-columns: 1fr; }
+            .info-col { padding: 40px; }
+            .form-col { padding: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg">
+        <div class="line-v" style="left: 20%"></div>
+        <div class="line-v" style="left: 40%"></div>
+        <div class="line-v" style="left: 60%"></div>
+        <div class="line-v" style="left: 80%"></div>
+    </div>
+
+    <nav class="doc-nav">
+        <div class="nav-left">
+            <span class="brand"><a href="index.html" style="text-decoration:none; color:inherit;">HUMAN<span class="plus">+</span></a></span>
+            <span class="meta-tag">SECURE_CHANNEL // ENCRYPTED</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">01. DATA</a></li>
+            <li><a href="index.html#articles">02. REPORTS</a></li>
+            <li><a href="index.html#critics">03. ANALYSIS</a></li>
+            <li><a href="about.html">04. ABOUT</a></li>
+            <li><a href="contact.html" style="color:var(--accent)">05. CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="contact-section">
+            <div class="contact-card">
+                
+                <div class="info-col">
+                    <div>
+                        <h1>CONTACT</h1>
+                        <p class="info-subtitle">ESTABLISH CONNECTION</p>
+                        
+                        <div class="info-group">
+                            <span class="info-label">HQ LOCATION</span>
+                            <span class="info-value">Coimbra, FCTUC<br>Portugal</span>
+                        </div>
+                        
+                        <div class="info-group">
+                            <span class="info-label">DIGITAL FREQUENCY</span>
+                            <span class="info-value">contact@humanplus.ai</span>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="#">TWITTER_X</a>
+                        <a href="#">INSTAGRAM</a>
+                        <a href="#">LINKEDIN</a>
+                    </div>
+                </div>
+
+                <div class="form-col">
+                    <form onsubmit="event.preventDefault(); alert('DATA PACKET TRANSMITTED.');">
+                        <div class="form-group">
+                            <label class="form-label">IDENTIFIER (NAME)</label>
+                            <input type="text" class="form-input" placeholder="Enter identification...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">RETURN ADDRESS (EMAIL)</label>
+                            <input type="email" class="form-input" placeholder="user@domain.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">DATA PACKET (MESSAGE)</label>
+                            <textarea rows="3" class="form-input" placeholder="Input transmission content..." style="resize:none"></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-send">TRANSMIT >></button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <footer class="clean-footer">
+            <div class="f-left">HUMAN+ ARCHIVE</div>
+            <div class="f-right">© 2025</div>
+        </footer>
+    </main>
+
+</body>
+</html>

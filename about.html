@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Human+ | About Protocol</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Space+Grotesk:wght@300;400;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* Estilos Específicos para About */
+        .about-section {
+            min-height: 100vh;
+            padding: 120px var(--spacing) 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Coluna Visual (Canvas) */
+        .visual-container {
+            width: 100%;
+            height: 70vh;
+            border: 1px solid var(--line-color);
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        .visual-label {
+            position: absolute; bottom: 20px; left: 20px;
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent);
+            z-index: 10;
+            background: #fff; padding: 2px 5px; border: 1px solid var(--accent);
+        }
+
+        /* Coluna Texto */
+        .text-container {
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        .mission-tag {
+            font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);
+            margin-bottom: 20px; display: block; border-left: 2px solid var(--accent); padding-left: 15px;
+        }
+
+        .glitch-title {
+            font-family: var(--font-orbitron); font-size: clamp(3rem, 5vw, 5rem);
+            line-height: 0.9; color: var(--text-main); margin-bottom: 30px;
+        }
+        .glitch-title span { color: var(--accent); }
+
+        .type-content {
+            font-family: var(--font-grotesk); font-size: 1.1rem; color: #444;
+            line-height: 1.6; margin-bottom: 40px; min-height: 150px;
+        }
+
+        .typing-cursor::after {
+            content: '█'; color: var(--accent); animation: blink 1s step-end infinite; margin-left: 2px; font-size: 0.8em;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stat-card {
+            border: 1px solid var(--line-color); padding: 20px; text-align: center;
+            transition: all 0.3s; background: #fff;
+        }
+        .stat-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .stat-num { font-family: var(--font-orbitron); font-size: 2rem; color: var(--text-main); display: block; }
+        .stat-label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--accent); letter-spacing: 1px; }
+
+        @media (max-width: 900px) {
+            .about-section { grid-template-columns: 1fr; }
+            .visual-container { height: 40vh; order: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg">
+        <div class="line-v" style="left: 20%"></div>
+        <div class="line-v" style="left: 40%"></div>
+        <div class="line-v" style="left: 60%"></div>
+        <div class="line-v" style="left: 80%"></div>
+    </div>
+
+    <nav class="doc-nav">
+        <div class="nav-left">
+            <span class="brand"><a href="index.html" style="text-decoration:none; color:inherit;">HUMAN<span class="plus">+</span></a></span>
+            <span class="meta-tag">ABOUT_PROTOCOL // V.2.0</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">01. DATA</a></li>
+            <li><a href="index.html#articles">02. REPORTS</a></li>
+            <li><a href="index.html#critics">03. ANALYSIS</a></li>
+            <li><a href="about.html" style="color:var(--accent)">04. ABOUT</a></li>
+            <li><a href="contact.html">05. CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="about-section">
+            
+            <div class="visual-container">
+                <canvas id="neural-canvas"></canvas>
+                <div class="visual-label">SYS_STATUS: NEURAL_LINK_ACTIVE</div>
+            </div>
+
+            <div class="text-container">
+                <span class="mission-tag">FILE: MISSION_STATEMENT</span>
+                
+                <h1 class="glitch-title">
+                    THE<br><span>MISSION</span>
+                </h1>
+
+                <div class="type-content">
+                    <p id="type-p1"></p>
+                    <br>
+                    <p id="type-p2"></p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-num">01</span>
+                        <span class="stat-label">ETHICS</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num">02</span>
+                        <span class="stat-label">AI_CORE</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num">03</span>
+                        <span class="stat-label">FUTURE</span>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <footer class="clean-footer">
+            <div class="f-left">HUMAN+ ARCHIVE</div>
+            <div class="f-right">© 2025</div>
+        </footer>
+    </main>
+
+    <script>
+        // --- 1. TYPEWRITER EFFECT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const text1 = 'Technology is not neutral. At "Human+", we investigate the critical intersection where human biology meets synthetic intelligence.';
+            const text2 = "Our goal is not only to observe the future, but to shape it through rigorous ethical discourse. We are the architects of the new digital consciousness.";
+
+            function typeWriter(elementId, text, speed, callback) {
+                const element = document.getElementById(elementId);
+                let i = 0;
+                element.classList.add('typing-cursor');
+
+                function type() {
+                    if (i < text.length) {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        element.classList.remove('typing-cursor');
+                        if (callback) callback();
+                    }
+                }
+                type();
+            }
+
+            setTimeout(() => {
+                typeWriter('type-p1', text1, 30, () => {
+                    typeWriter('type-p2', text2, 30, null);
+                });
+            }, 500);
+
+            // --- 2. NEURAL CANVAS (Light Mode) ---
+            const canvas = document.getElementById('neural-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height, particles = [];
+
+            function resize() {
+                // Ajusta ao tamanho do container pai
+                const rect = canvas.parentElement.getBoundingClientRect();
+                width = canvas.width = rect.width;
+                height = canvas.height = rect.height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Node {
+                constructor() {
+                    this.x = Math.random() * width;
+                    this.y = Math.random() * height;
+                    this.vx = (Math.random() - 0.5) * 1.5;
+                    this.vy = (Math.random() - 0.5) * 1.5;
+                    this.size = Math.random() * 3 + 1;
+                }
+                update() {
+                    this.x += this.vx; this.y += this.vy;
+                    if(this.x < 0 || this.x > width) this.vx *= -1;
+                    if(this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = '#111'; // Pontos pretos
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                    ctx.fill();
+                }
+            }
+
+            for(let i=0; i<40; i++) particles.push(new Node());
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                // Fundo branco ligeiro
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.fillRect(0,0,width,height);
+
+                particles.forEach((p, index) => {
+                    p.update();
+                    p.draw();
+                    for(let j=index; j<particles.length; j++) {
+                        const dx = particles[j].x - p.x;
+                        const dy = particles[j].y - p.y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 120) {
+                            // Linhas cinzentas/azuladas
+                            ctx.strokeStyle = `rgba(46, 84, 214, ${1 - dist/120})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        });
+    </script>
+</body>
+</html>
