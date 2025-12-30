@@ -5,20 +5,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.scrollTo(0, 0);
 
+    const splash = document.getElementById('splash-screen');
     const title = document.getElementById("hero-title");
-    if (title) {
-        const letters = "0101010101ABCDEFGHIJKLMNOP";
+    
+    // Variável de controlo do Scroll
+    let isScrolling = false;
+    let scrollTimer = null;
+
+    function animateTitle() {
+        if (!title) return;
+        
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         const originalText = title.dataset.value.replace('+', '');
         const suffix = '<span class="plus-accent">+</span>';
-        let interval = null;
+        
         let iteration = 0;
+        
+        if (title.dataset.intervalId) {
+            clearInterval(title.dataset.intervalId);
+        }
 
-        interval = setInterval(() => {
+        title.classList.remove('resolved');
+
+        const interval = setInterval(() => {
             title.innerHTML = originalText
                 .split("")
                 .map((letter, index) => {
                     if (index < iteration) return originalText[index];
-                    return letters[Math.floor(Math.random() * 26)];
+                    return letters[Math.floor(Math.random() * letters.length)];
                 })
                 .join("") + suffix;
 
@@ -26,9 +40,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(interval);
                 title.classList.add('resolved');
             }
-            iteration += 1 / 8;
-        }, 60);
+            iteration += 1 / 3;
+        }, 30);
+
+        title.dataset.intervalId = interval;
     }
+
+    // Alteração aqui: Só anima se NÃO estiver a fazer scroll
+    if (title) {
+        title.addEventListener('mouseenter', () => {
+            if (!isScrolling) {
+                animateTitle();
+            }
+        });
+    }
+
+    setTimeout(() => {
+        if (splash) splash.classList.add('hidden');
+        setTimeout(animateTitle, 200);
+    }, 4000);
 
     const zoomWrapper = document.querySelector('.scroll-zoom-wrapper');
     const stickyHero = document.querySelector('.sticky-hero');
@@ -66,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     updateZoom();
 
-    // --- TIMELINE FOR DOC 01 ---
     const timelineSection = document.querySelector('.timeline-container');
     const progressLine = document.getElementById('progress-line');
     const nodes = document.querySelectorAll('.timeline-node');
@@ -74,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTimeline() {
         if (!timelineSection) return;
         
-        // Only run if the timeline is actually visible/open
         if (timelineSection.closest('.file-item').classList.contains('active')) {
             const rect = timelineSection.getBoundingClientRect();
             const windowHeight = window.innerHeight;
@@ -92,24 +120,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- GENERIC SCROLL ANIMATION FOR DOC 02-06 ---
-    // Looks for .info-block elements in active articles
     function updateInfoBlocks() {
         const activeBlocks = document.querySelectorAll('.file-item.active .info-block');
         const windowHeight = window.innerHeight;
         
         activeBlocks.forEach(block => {
             const rect = block.getBoundingClientRect();
-            // Trigger when top of block is 85% down the viewport
             if (rect.top < windowHeight * 0.85) {
                 block.classList.add('visible');
             }
         });
     }
 
+    // Listener de scroll modificado para detetar movimento
     window.addEventListener('scroll', () => {
+        // Bloqueia hover
+        isScrolling = true;
+        
+        // Executa funções de scroll
         updateTimeline();
         updateInfoBlocks();
+
+        // Limpa o timer anterior e define um novo
+        if (scrollTimer !== null) {
+            clearTimeout(scrollTimer);
+        }
+        
+        // Após 150ms sem scroll, liberta o hover novamente
+        scrollTimer = setTimeout(() => {
+            isScrolling = false;
+        }, 150);
     });
 
     const lightbox = document.getElementById('lightbox');
@@ -165,7 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === lightbox) lightbox.classList.remove('active');
     });
 
-    // --- IMPROVED ACCORDION LOGIC ---
     const fileItems = document.querySelectorAll('.file-item');
     fileItems.forEach(item => {
         const header = item.querySelector('.file-header');
@@ -173,17 +212,13 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const isActive = item.classList.contains('active');
             
-            // 1. Close all items first
             fileItems.forEach(f => f.classList.remove('active'));
 
             if (!isActive) {
-                // 2. Open the clicked item
                 item.classList.add('active');
                 
-                // 3. Scroll to the header of the opened item after layout shift
-                // We use setTimeout to allow the browser to register the class change and CSS transition to start
                 setTimeout(() => {
-                    const offset = 75; // Offset for sticky nav
+                    const offset = 75;
                     const bodyRect = document.body.getBoundingClientRect().top;
                     const elementRect = item.getBoundingClientRect().top;
                     const elementPosition = elementRect - bodyRect;
@@ -194,13 +229,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         behavior: "smooth"
                     });
                     
-                    // Trigger animations immediately for initial view
                     setTimeout(() => {
                         updateTimeline();
                         updateInfoBlocks();
                     }, 300);
                     
-                }, 550); // Slightly longer than CSS transition (0.5s) to ensure smooth expansion first
+                }, 550);
             }
         });
     });

@@ -30,6 +30,79 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* --- SPLASH SCREEN --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #050505;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease-in-out, visibility 0.8s ease-in-out;
+}
+
+#splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.splash-logo {
+    font-family: var(--font-orbitron);
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 20px;
+    letter-spacing: 5px;
+    font-weight: 900;
+}
+
+.loader-line-container {
+    width: 100%;
+    height: 2px;
+    background: #333;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.loader-line {
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    position: absolute;
+    left: -100%;
+    animation: loadLine 3.8s cubic-bezier(0.83, 0, 0.17, 1) forwards;
+}
+
+.sys-status {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #666;
+    margin-top: 10px;
+}
+
+@keyframes loadLine {
+    0% { left: -100%; }
+    50% { left: -20%; }
+    100% { left: 0%; }
+}
+
+/* --- HERO & ZOOM --- */
+#hero-title {
+    cursor: default;
+    user-select: none;
+}
+
 .scroll-zoom-wrapper {
     height: 250vh;
     width: 100%;
@@ -132,6 +205,7 @@ body {
     opacity: 0.3;
 }
 
+/* --- NAV & LAYOUT --- */
 .file-category {
     font-family: var(--font-mono);
     font-size: 0.7rem;
@@ -256,18 +330,34 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.05);
 }
 
-.node-visual img {
+/* --- CORREÇÃO: IMAGENS DO ARTIGO 1 (TIMELINE) --- */
+
+/* 1. Estado padrão e Estado Ativo (Preto e Branco) */
+.node-visual img,
+.timeline-node.active .node-visual img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(100%) contrast(1.2);
-    transition: filter 0.8s ease, transform 0.8s ease;
+    filter: grayscale(100%) contrast(1.1); /* Garante Preto e Branco */
+    transition: filter 0.6s ease, transform 0.6s ease;
+    transform: scale(1);
 }
 
-.timeline-node.active .node-visual img {
-    filter: grayscale(0%) contrast(1);
-    transform: scale(1.03);
+/* 2. Efeito de HOVER (Força a cor e o zoom) */
+/* Usamos .timeline-node antes para aumentar a "força" do seletor */
+.timeline-node .node-visual:hover img {
+    filter: grayscale(0%) contrast(1); /* Fica colorido */
+    transform: scale(1.05); /* Zoom */
+    cursor: default; /* Remove o ícone de clique */
 }
+
+/* Sombra e borda no container ao passar o rato */
+.timeline-node .node-visual:hover {
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    border-color: var(--accent);
+}
+
+/* ------------------------------------------------ */
 
 .node-text h4 {
     font-family: var(--font-orbitron);
@@ -346,19 +436,6 @@ body {
     padding-left: 23px;
 }
 
-.img-caption {
-    display: block;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background: rgba(0,0,0,0.7);
-    color: white;
-    padding: 5px 10px;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    letter-spacing: 1px;
-}
-
 .refs {
     margin-top: 40px;
     border-top: 1px solid #eee;
@@ -369,6 +446,7 @@ body {
     padding-left: 210px;
 }
 
+/* --- LIGHTBOX --- */
 .lightbox-overlay {
     position: fixed;
     top: 0;
@@ -473,6 +551,7 @@ body {
     background-color: #e5e5e5;
 }
 
+/* --- NAVIGATION --- */
 .doc-nav {
     position: fixed;
     top: 0;
@@ -616,6 +695,7 @@ body {
     transform: rotate(45deg);
 }
 
+/* --- MARQUEE --- */
 .section-marquee {
     background: #e8e8e8;
     padding: 80px 0;
@@ -774,6 +854,7 @@ body {
     border-bottom-color: #666;
 }
 
+/* --- CRITICS --- */
 .section-critics {
     padding: 100px var(--spacing);
     background: #fff;
@@ -865,6 +946,7 @@ body {
     font-size: 0.75rem;
 }
 
+/* --- REFS & FOOTER --- */
 .section-refs {
     padding: 80px var(--spacing);
     background: #fff;
