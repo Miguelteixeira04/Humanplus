@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    if (history.scrollRestoration) {
-        history.scrollRestoration = 'manual';
+    if (!sessionStorage.getItem('splashShown')) {
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
     }
-    window.scrollTo(0, 0);
 
     const splash = document.getElementById('splash-screen');
     const title = document.getElementById("hero-title");
     
-    // Variável de controlo do Scroll
     let isScrolling = false;
     let scrollTimer = null;
 
@@ -46,7 +47,20 @@ document.addEventListener('DOMContentLoaded', () => {
         title.dataset.intervalId = interval;
     }
 
-    // Alteração aqui: Só anima se NÃO estiver a fazer scroll
+    if (sessionStorage.getItem('splashShown')) {
+        if (splash) {
+            splash.style.display = 'none';
+            splash.classList.add('hidden');
+        }
+        setTimeout(animateTitle, 100);
+    } else {
+        setTimeout(() => {
+            if (splash) splash.classList.add('hidden');
+            sessionStorage.setItem('splashShown', 'true');
+            setTimeout(animateTitle, 200);
+        }, 4000);
+    }
+
     if (title) {
         title.addEventListener('mouseenter', () => {
             if (!isScrolling) {
@@ -54,11 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
-    setTimeout(() => {
-        if (splash) splash.classList.add('hidden');
-        setTimeout(animateTitle, 200);
-    }, 4000);
 
     const zoomWrapper = document.querySelector('.scroll-zoom-wrapper');
     const stickyHero = document.querySelector('.sticky-hero');
@@ -132,21 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Listener de scroll modificado para detetar movimento
     window.addEventListener('scroll', () => {
-        // Bloqueia hover
         isScrolling = true;
         
-        // Executa funções de scroll
         updateTimeline();
         updateInfoBlocks();
 
-        // Limpa o timer anterior e define um novo
         if (scrollTimer !== null) {
             clearTimeout(scrollTimer);
         }
         
-        // Após 150ms sem scroll, liberta o hover novamente
         scrollTimer = setTimeout(() => {
             isScrolling = false;
         }, 150);
