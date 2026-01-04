@@ -303,7 +303,7 @@ body {
 .node-year::after {
     content: '';
     position: absolute;
-    right: -6px;
+    right: -10px;
     top: 5px;
     width: 14px;
     height: 14px;
@@ -1120,3 +1120,4 @@ body {
         gap: 40px;
     }
 }
+
