@@ -47,17 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
         title.dataset.intervalId = interval;
     }
 
-    if (sessionStorage.getItem('splashShown')) {
+    function removeSplash() {
         if (splash) {
-            splash.style.display = 'none';
             splash.classList.add('hidden');
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 800);
         }
+        setTimeout(animateTitle, 200);
+    }
+
+    if (sessionStorage.getItem('splashShown')) {
+        if (splash) splash.style.display = 'none';
         setTimeout(animateTitle, 100);
     } else {
         setTimeout(() => {
-            if (splash) splash.classList.add('hidden');
+            removeSplash();
             sessionStorage.setItem('splashShown', 'true');
-            setTimeout(animateTitle, 200);
         }, 4000);
     }
 
@@ -67,6 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 animateTitle();
             }
         });
+        title.addEventListener('touchstart', () => {
+            animateTitle();
+        }, {passive: true});
     }
 
     const zoomWrapper = document.querySelector('.scroll-zoom-wrapper');
@@ -276,6 +285,24 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    const marqueeTrack = document.querySelector('.marquee-track');
+    
+    if (marqueeTrack) {
+        marqueeTrack.addEventListener('mouseenter', () => {
+            const anims = marqueeTrack.getAnimations();
+            anims.forEach(anim => {
+                anim.updatePlaybackRate(0.2); 
+            });
+        });
+
+        marqueeTrack.addEventListener('mouseleave', () => {
+            const anims = marqueeTrack.getAnimations();
+            anims.forEach(anim => {
+                anim.updatePlaybackRate(1);
+            });
+        });
+    }
 
     const canvas = document.getElementById('tech-canvas');
     if (canvas) {
