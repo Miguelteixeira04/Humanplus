@@ -724,9 +724,6 @@ body {
     padding-left: var(--spacing);
 }
 
-.marquee-track:hover {
-    animation-play-state: paused;
-}
 
 @keyframes scrollInfinite {
     0% { transform: translateX(0); }
@@ -738,12 +735,13 @@ body {
     background: #fff;
     border: 1px solid #ccc;
     flex-shrink: 0;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease; 
 }
 
 .h-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transform: scale(1.05); 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    z-index: 10; 
 }
 
 .h-visual {
@@ -1120,4 +1118,3 @@ body {
         gap: 40px;
     }
 }
-
