@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="styles.css">
 
     <style>
-        /* Estilos Específicos para Contact */
         .contact-section {
             min-height: 100vh;
             padding: 120px var(--spacing) 60px;
@@ -21,10 +20,9 @@
             width: 100%; max-width: 1200px;
             background: #fff;
             border: 1px solid var(--text-main);
-            box-shadow: 20px 20px 0 rgba(0,0,0,0.1); /* Sombra sólida técnica */
+            box-shadow: 20px 20px 0 rgba(0,0,0,0.1); 
         }
 
-        /* Coluna Info (Preta) */
         .info-col {
             background: var(--text-main); color: #fff;
             padding: 60px; display: flex; flex-direction: column; justify-content: space-between;
@@ -33,15 +31,13 @@
         .info-subtitle { font-family: var(--font-mono); font-size: 0.8rem; color: #888; margin-bottom: 40px; }
         
         .info-group { margin-bottom: 30px; }
-        .info-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 2px; margin-bottom: 5px; display: block; }
+        .info-label { font-family: var(--font-mono); font-size: 0.7rem; color: #888; letter-spacing: 2px; margin-bottom: 5px; display: block; }
         .info-value { font-family: var(--font-grotesk); font-size: 1rem; color: #ddd; }
         
         .social-links a { color: #888; text-decoration: none; margin-right: 15px; font-family: var(--font-mono); font-size: 0.8rem; transition: color 0.3s; }
         .social-links a:hover { color: #fff; }
 
-        /* Coluna Formulário (Branca) */
         .form-col { padding: 60px; position: relative; }
-        /* Padrão de fundo subtil */
         .form-col::before {
             content: ""; position: absolute; inset: 0;
             background-image: radial-gradient(#ccc 1px, transparent 1px);
@@ -90,7 +86,7 @@
 
     <nav class="doc-nav">
         <div class="nav-left">
-            <span class="brand"><a href="index.html" style="text-decoration:none; color:inherit;">HUMAN<span class="plus">+</span></a></span>
+            <span class="brand"><a href="index.html" style="text-decoration:none; color:inherit;">human<span class="plus">+</span></a></span>
             <span class="meta-tag">SECURE_CHANNEL // ENCRYPTED</span>
         </div>
         <ul class="nav-links">
@@ -130,7 +126,7 @@
                 </div>
 
                 <div class="form-col">
-                    <form onsubmit="event.preventDefault(); alert('DATA PACKET TRANSMITTED.');">
+                    <form onsubmit="event.preventDefault();">
                         <div class="form-group">
                             <label class="form-label">IDENTIFIER (NAME)</label>
                             <input type="text" class="form-input" placeholder="Enter identification...">

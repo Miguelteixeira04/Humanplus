@@ -1,14 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    if (history.scrollRestoration) {
-        history.scrollRestoration = 'manual';
+    if (!sessionStorage.getItem('splashShown')) {
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
     }
-    window.scrollTo(0, 0);
 
     const splash = document.getElementById('splash-screen');
     const title = document.getElementById("hero-title");
     
-    // Variável de controlo do Scroll
     let isScrolling = false;
     let scrollTimer = null;
 
@@ -46,19 +47,36 @@ document.addEventListener('DOMContentLoaded', () => {
         title.dataset.intervalId = interval;
     }
 
-    // Alteração aqui: Só anima se NÃO estiver a fazer scroll
+    function removeSplash() {
+        if (splash) {
+            splash.classList.add('hidden');
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 800);
+        }
+        setTimeout(animateTitle, 200);
+    }
+
+    if (sessionStorage.getItem('splashShown')) {
+        if (splash) splash.style.display = 'none';
+        setTimeout(animateTitle, 100);
+    } else {
+        setTimeout(() => {
+            removeSplash();
+            sessionStorage.setItem('splashShown', 'true');
+        }, 4000);
+    }
+
     if (title) {
         title.addEventListener('mouseenter', () => {
             if (!isScrolling) {
                 animateTitle();
             }
         });
+        title.addEventListener('touchstart', () => {
+            animateTitle();
+        }, {passive: true});
     }
-
-    setTimeout(() => {
-        if (splash) splash.classList.add('hidden');
-        setTimeout(animateTitle, 200);
-    }, 4000);
 
     const zoomWrapper = document.querySelector('.scroll-zoom-wrapper');
     const stickyHero = document.querySelector('.sticky-hero');
@@ -132,21 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Listener de scroll modificado para detetar movimento
     window.addEventListener('scroll', () => {
-        // Bloqueia hover
         isScrolling = true;
         
-        // Executa funções de scroll
         updateTimeline();
         updateInfoBlocks();
 
-        // Limpa o timer anterior e define um novo
         if (scrollTimer !== null) {
             clearTimeout(scrollTimer);
         }
         
-        // Após 150ms sem scroll, liberta o hover novamente
         scrollTimer = setTimeout(() => {
             isScrolling = false;
         }, 150);
@@ -273,6 +286,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const marqueeTrack = document.querySelector('.marquee-track');
+    
+    if (marqueeTrack) {
+        marqueeTrack.addEventListener('mouseenter', () => {
+            const anims = marqueeTrack.getAnimations();
+            anims.forEach(anim => {
+                anim.updatePlaybackRate(0.2); 
+            });
+        });
+
+        marqueeTrack.addEventListener('mouseleave', () => {
+            const anims = marqueeTrack.getAnimations();
+            anims.forEach(anim => {
+                anim.updatePlaybackRate(1);
+            });
+        });
+    }
+
     const canvas = document.getElementById('tech-canvas');
     if (canvas) {
         const ctx = canvas.getContext('2d');
@@ -333,4 +364,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         animate();
     }
+
+
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll(".nav-links li a");
+    function highlightMenu() {
+        let current = "";
+        const triggerPoint = window.innerHeight * 0.3;
+
+        sections.forEach((section) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= triggerPoint && rect.bottom > triggerPoint) {
+                current = section.getAttribute("id");
+            }
+        });
+
+        navLinks.forEach((link) => {
+            link.classList.remove("nav-active");
+            
+            if (current) {
+                const href = link.getAttribute("href");
+                if (href === `#${current}`) {
+                    link.classList.add("nav-active");
+                }
+            }
+        });
+    }
+
+    window.addEventListener("scroll", () => {
+        isScrolling = true;
+        updateTimeline();
+        updateInfoBlocks();
+        highlightMenu(); 
+        if (scrollTimer !== null) {
+            clearTimeout(scrollTimer);
+        }    
+        scrollTimer = setTimeout(() => {
+            isScrolling = false;
+        }, 150);
+    });
+    
 });
