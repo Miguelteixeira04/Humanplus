@@ -34,6 +34,7 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+
 #splash-screen {
     position: fixed;
     top: 0;
@@ -67,7 +68,7 @@ body {
     font-size: 2rem;
     color: white;
     margin-bottom: 20px;
-    letter-spacing: 5px;
+    letter-spacing: 2px;
     font-weight: 900;
 }
 
@@ -180,11 +181,10 @@ body {
 }  
 
 
-
 .hero-subtitle {
     font-family: var(--font-grotesk);
     font-size: clamp(1rem, 2vw, 1.5rem);
-    letter-spacing: 5px;
+    letter-spacing: 2px;
     color: #666;
     margin-top: 20px;
     text-transform: uppercase;
