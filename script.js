@@ -286,13 +286,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     const marqueeTrack = document.querySelector('.marquee-track');
     
     if (marqueeTrack) {
+        const cards = Array.from(marqueeTrack.children);
+        
+        cards.forEach(card => {
+            const clone = card.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true'); 
+            marqueeTrack.appendChild(clone);
+        });
+ 
         marqueeTrack.addEventListener('mouseenter', () => {
             const anims = marqueeTrack.getAnimations();
             anims.forEach(anim => {
-                anim.updatePlaybackRate(0.2); 
+                anim.updatePlaybackRate(0); 
             });
         });
 

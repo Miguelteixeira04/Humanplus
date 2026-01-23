@@ -167,14 +167,18 @@ body {
     }
 }
 
+/*alura do +*/
 .plus-accent {
     color: #000000;       
     display: inline;      
     animation: none;      
-    font-size: 1em;      
+    font-size: 1.35em;      
     margin-left: 0.1em;   
-    text-shadow: none;   
-} 
+    text-shadow: none;
+    position: relative;
+    top: 0.08em;  
+}  
+
 
 
 .hero-subtitle {
@@ -722,7 +726,7 @@ body {
     display: flex;
     gap: 30px;
     width: max-content;
-    animation: scrollInfinite 40s linear infinite;
+    animation: scrollInfinite 70s linear infinite;
     padding-left: var(--spacing);
 }
 
