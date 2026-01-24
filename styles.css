@@ -3,7 +3,7 @@
     --card-bg: #ffffff;
     --text-main: #050505;
     --text-dim: #666666;
-    --accent: #0000AF;
+    --accent: #10069F;
     --line-color: #d1d1d1;
     --font-orbitron: 'Orbitron', sans-serif;
     --font-grotesk: 'Space Grotesk', sans-serif;
@@ -168,7 +168,6 @@ body {
     }
 }
 
-/*alura do +*/
 .plus-accent {
     color: #000000;       
     display: inline;      
@@ -322,27 +321,30 @@ body {
     padding-left: 60px;
 }
 
+/* Timeline Article 1 Images */
 .node-visual {
     width: 100%;
     height: 300px;
-    background: #eee;
+    background: transparent; /* Removed background for Article 1 */
     overflow: hidden;
     margin-bottom: 25px;
-    border: 1px solid transparent;
-    transition: border 0.3s;
-    border-radius: 4px;
+    border: none;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .timeline-node.active .node-visual {
-    border-color: var(--accent);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    border: none;
+    box-shadow: none;
 }
 
-.node-visual img,
-.timeline-node.active .node-visual img {
-    width: 100%;
+.node-visual img {
+    width: auto;
+    max-width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* Changed to contain for transparent PNGs */
     filter: grayscale(100%) contrast(1.1);
     transition: filter 0.6s ease, transform 0.6s ease;
     transform: scale(1);
@@ -355,8 +357,8 @@ body {
 }
 
 .timeline-node .node-visual:hover {
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    border-color: var(--accent);
+    box-shadow: none;
+    border: none;
 }
 
 .node-text h4 {
@@ -376,63 +378,93 @@ body {
 }
 
 .interactive-container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 60px 40px;
     display: flex;
     flex-direction: column;
-    gap: 80px;
+    gap: 120px; 
 }
 
-.info-block {
+/* NEW ZIG ZAG LAYOUT */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: 60px;
     opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: opacity 0.8s ease-out;
 }
 
-.info-block.visible {
+.info-row.visible {
     opacity: 1;
-    transform: translateY(0);
 }
 
-.block-visual {
-    width: 100%;
-    height: 450px;
-    margin-bottom: 30px;
-    overflow: hidden;
-    background: #e0e0e0;
-    border-radius: 2px;
-    position: relative;
+.info-row.reverse {
+    flex-direction: row-reverse;
 }
 
-.block-visual .article-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%);
-    transition: all 0.6s ease;
-    opacity: 0.9;
+.visual-col {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    overflow: hidden; 
 }
 
-.block-visual:hover .article-img {
-    filter: grayscale(0%);
-    transform: scale(1.05);
+.text-col {
+    flex: 1;
+    padding-top: 20px;
 }
 
-.block-text h4 {
+.visual-col img {
+    max-width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: contain;
+    transform: translateX(-50px);
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.info-row.reverse .visual-col img {
+    transform: translateX(50px);
+}
+
+.info-row.visible .visual-col img {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.info-row.visible .text-col {
+    animation: fadeUp 1s ease-out forwards;
+    opacity: 0; 
+}
+
+@keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.info-row.centered-text {
+    flex-direction: column;
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.block-text h4, .text-col h4 {
     font-family: var(--font-orbitron);
     font-size: 1.8rem;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     color: var(--text-main);
     border-left: 3px solid var(--accent);
     padding-left: 20px;
 }
 
-.block-text p {
+.block-text p, .text-col p {
     margin-bottom: 1rem;
     font-size: 1.05rem;
     color: #444;
-    line-height: 1.5;
+    line-height: 1.6;
     padding-left: 23px;
 }
 
@@ -444,6 +476,10 @@ body {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     padding-left: 210px;
+}
+
+.text-col .refs {
+    padding-left: 23px; 
 }
 
 .lightbox-overlay {
@@ -961,7 +997,8 @@ body {
     line-height: 1.5;
     color: #333;
     margin-bottom: 25px;
-    text-align: justify;
+    text-align: left;
+    letter-spacing: normal;
 }
 
 .key-proposal {
@@ -1047,21 +1084,25 @@ body {
     padding: 30px var(--spacing);
     display: flex;
     justify-content: space-between;
-    font-family: var(--font-grotesk); /* Fonte normal para o "ARCHIVE" */
+    font-family: var(--font-grotesk); 
     font-size: 0.8rem;
     color: #888;
-    align-items: center; /* Garante alinhamento vertical */
+    align-items: center; 
 }
 
-/* Estilo específico para o "human+" */
 .footer-brand {
     font-family: var(--font-orbitron);
-    font-weight: 900; /* Peso bold para igualar ao logo */
-    margin-right: 5px; /* Pequeno espaço extra */
-    color: #000; /* Opcional: se quiseres que o logo seja preto e o resto cinza */
+    font-weight: 900; 
+    margin-right: 5px; 
+    color: #000; 
 }
 
 @media (max-width: 900px) {
+    .info-row, .info-row.reverse { flex-direction: column; gap: 30px; }
+    .visual-col img { transform: translateY(30px); }
+    .info-row.reverse .visual-col img { transform: translateY(30px); }
+    .info-row.visible .visual-col img { transform: translateY(0); }
+    
     .critic-entry { grid-template-columns: 1fr; gap: 40px; }
     .critic-img-col img { height: 350px; }
 }
