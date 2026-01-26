@@ -1036,9 +1036,13 @@ body {
 
 .refs-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    margin-top: 50px;
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas fixas */
+    gap: 2rem;
+    width: 100%;
+}
+
+.ref-col {
+    padding: 1rem;
 }
 
 .ref-col h4 {
